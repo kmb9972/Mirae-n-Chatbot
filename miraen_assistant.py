@@ -184,16 +184,11 @@ st.markdown("""
         display: none !important;
     }
 
-    /* ── 사이드바 (모바일 ≤ 768px: 토글 복원) ───────────── */
+    /* ── 사이드바 (모바일 ≤ 768px: 완전 숨김) ───────────── */
     @media (max-width: 768px) {
-        /* 강제 고정 해제 → Streamlit 기본 동작으로 복귀 */
-        [data-testid="stSidebar"] {
-            transform: unset !important;
-            min-width: unset !important;
-        }
-        /* 토글 버튼 다시 표시 */
+        [data-testid="stSidebar"],
         [data-testid="collapsedControl"] {
-            display: flex !important;
+            display: none !important;
         }
     }
 
@@ -384,12 +379,18 @@ st.markdown("""
     .avatar-user { background: var(--ci-dark); }
     .avatar-bot  {
         background-image: url('https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/MAMA.png?raw=true');
-        background-size: cover;
+        background-size: 110%;              /* scale과 동일 효과 – 여백 없이 꽉 채움 */
         background-position: center;
-        background-color: var(--ci-blue); /* 이미지 로딩 전 fallback */
-        font-size: 0;                     /* 이모지 텍스트 숨김 */
+        background-repeat: no-repeat;
+        background-color: var(--ci-blue);   /* 이미지 로딩 전 fallback */
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        font-size: 0;                       /* 이모지 텍스트 완전 숨김 */
         border: 2px solid rgba(255,255,255,0.3);
         box-shadow: 0 2px 8px rgba(26, 83, 160, 0.25);
+        overflow: hidden;
+        flex-shrink: 0;
     }
 
     /* ── 입력창 ──────────────────────────────────────────── */
