@@ -188,16 +188,19 @@ st.markdown("""
 
     /* ── 사이드바 (PC: 항상 고정 표시) ─────────────────── */
     [data-testid="stSidebar"] {
-        background: var(--ci-blue) !important;
+        background-image: url('https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/SIDE%20BAR.png?raw=true') !important;
+        background-size: cover !important;
+        background-position: top center !important;
+        background-repeat: no-repeat !important;
         border-right: none;
         display: block !important;
         visibility: visible !important;
-        transform: none !important;         /* Streamlit 자동 슬라이드 아웃 차단 */
+        transform: none !important;
         min-width: 240px !important;
     }
-    /* 사이드바 내부 Streamlit 기본 배경 덮어쓰기 */
+    /* 사이드바 내부 Streamlit 기본 배경 제거 */
     [data-testid="stSidebar"] > div:first-child {
-        background: var(--ci-blue) !important;
+        background: transparent !important;
     }
     [data-testid="stSidebar"] * {
         color: var(--ci-white) !important;
@@ -540,19 +543,8 @@ st.markdown("""
 # 4. 사이드바
 # ──────────────────────────────────────────
 with st.sidebar:
-    # 로고/타이틀
-    st.markdown("""
-        <div style="text-align:center; padding: 12px 0 20px;">
-            <div style="font-size:2.6rem; line-height:1;">🤖</div>
-            <div style="font-size:1.2rem; font-weight:800; color:#FFFFFF; margin-top:8px; letter-spacing:-0.01em;">
-                MAMA
-            </div>
-            <div style="font-size:0.68rem; color:rgba(255,255,255,0.55); margin-top:3px; letter-spacing:0.06em; text-transform:uppercase;">
-                MiraeN AI, Miraen Assistant
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
+    # 배경 이미지 영역만큼 스페이서 (로고 이미지가 배경에 표시됨)
+    st.markdown("<div style='height: 155px;'></div>", unsafe_allow_html=True)
     st.markdown("<hr>", unsafe_allow_html=True)
 
     # WIFI 정보
