@@ -595,10 +595,11 @@ with st.sidebar:
         st.session_state.messages = []
         st.rerun()
 
-    st.markdown("""
+    st.markdown(f"""
         <div style="text-align:center; font-size:0.72rem; color:rgba(255,255,255,0.45); padding: 12px 0 4px;">
             문의: 인사지원팀<br>
-            © 2025 MiraeN Co., Ltd.
+            © {current_year} MiraeN Co., Ltd.<br>
+            제작: 강민범 선임
         </div>
     """, unsafe_allow_html=True)
 
