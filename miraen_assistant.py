@@ -648,9 +648,9 @@ with st.sidebar:
     st.markdown("""
         <div class="sidebar-card">
             <h4>🔒 문서보안 설정</h4>
-            <p>서버: <span class="value">doc.mirae-n.com</span></p>
-            <p>포트: <span class="value">443</span></p>
-            <p>계정: <span class="value">사번</span></p>
+            <p><span class="value">서버</span>: doc.mirae-n.com</p>
+            <p><span class="value">포트</span>: 443</p>
+            <p><span class="value">계정</span>: 사번</p>
         </div>
     """, unsafe_allow_html=True)
 
