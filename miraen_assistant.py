@@ -679,7 +679,7 @@ col_input, col_btn = st.columns([5, 1])
 with col_input:
     user_input = st.text_input(
         label="질문 입력",
-        placeholder="예: 출산 휴가는 며칠 받을 수 있나요?",
+        placeholder="예시) 우리 승진 체계는 어떻게 돼?",
         label_visibility="collapsed",
         key="user_input"
     )
