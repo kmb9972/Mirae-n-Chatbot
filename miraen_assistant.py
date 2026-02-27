@@ -594,11 +594,11 @@ with st.sidebar:
     st.markdown("""
         <div class="sidebar-card">
             <h4>📶 WIFI 정보</h4>
-            <p>직원용</p>
-            <p class="value">MiraeN-AP</p>
+            <p class="value">직원용</p>
+            <p>MiraeN-AP</p>
             <p style="color:rgba(255,255,255,0.6) !important; font-size:0.75rem;">PW: 19480924ab</p>
-            <p style="margin-top:10px;">외부 방문객용</p>
-            <p class="value">MiraeN-WIfI</p>
+            <p style="margin-top:10px;" class="value">외부 방문객용</p>
+            <p>MiraeN-WIfI</p>
             <p style="color:rgba(255,255,255,0.6) !important; font-size:0.75rem;">PW: 34753800</p>
         </div>
     """, unsafe_allow_html=True)
