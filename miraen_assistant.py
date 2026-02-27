@@ -679,7 +679,7 @@ col_input, col_btn = st.columns([5, 1])
 with col_input:
     user_input = st.text_input(
         label="질문 입력",
-        placeholder="예시) 우리 승진 체계는 어떻게 돼?",
+        placeholder="EX) 우리 승진 체계는 어떻게 돼?",
         label_visibility="collapsed",
         key="user_input"
     )
@@ -1398,3 +1398,4 @@ def handle_send(question: str):
 # 전송 버튼으로 메시지 전송
 if send_clicked and user_input:
     handle_send(user_input)
+
