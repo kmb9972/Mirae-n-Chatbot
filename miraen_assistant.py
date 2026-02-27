@@ -158,6 +158,9 @@ st.markdown("""
     .stApp {
         background: var(--ci-pale);
         font-family: 'Noto Sans KR', sans-serif;
+        word-break: keep-all;          /* 한글 단어 쪼개짐 방지 */
+        overflow-wrap: break-word;     /* 긴 영문/URL 줄바꿈 허용 */
+        word-wrap: break-word;         /* 구형 브라우저 호환 */
     }
 
     /* ── 사이드바 ──────────────────────────────────────── */
@@ -326,6 +329,8 @@ st.markdown("""
         font-size: 0.9rem;
         line-height: 1.65;
         box-shadow: 0 3px 14px rgba(26, 83, 160, 0.30);
+        word-break: keep-all;
+        overflow-wrap: break-word;
     }
 
     /* 봇 말풍선 – 연한 블루 배경 + 진한 텍스트 */
@@ -339,6 +344,8 @@ st.markdown("""
         line-height: 1.75;
         box-shadow: 0 2px 10px rgba(26, 83, 160, 0.08);
         border: 1px solid var(--ci-border);   /* #C2D5EC */
+        word-break: keep-all;
+        overflow-wrap: break-word;
     }
 
     /* 아바타 */
@@ -441,6 +448,113 @@ st.markdown("""
     @keyframes bounce {
         0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
         40%           { transform: scale(1);   opacity: 1;   }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       반응형 – 태블릿 (≤ 768px)
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+        /* 전체 컨테이너 좌우 여백 축소 */
+        .block-container {
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+            padding-top: 0.75rem !important;
+            max-width: 100% !important;
+        }
+
+        /* 헤더 패딩·폰트 축소 */
+        .main-header {
+            padding: 24px 16px 20px !important;
+            border-radius: 14px !important;
+            margin-bottom: 16px !important;
+        }
+        .mama-title {
+            font-size: 1.25rem !important;
+            line-height: 1.4 !important;
+            word-break: keep-all !important;
+        }
+        .mama-sub {
+            font-size: 0.8rem !important;
+            line-height: 1.55 !important;
+        }
+        .mama-badge {
+            font-size: 0.65rem !important;
+            padding: 4px 12px !important;
+            margin-bottom: 12px !important;
+        }
+        .mama-mock-badge {
+            font-size: 0.62rem !important;
+        }
+
+        /* 말풍선 너비 확대 – 모바일에서 더 넓게 */
+        .bubble-user      { max-width: 86% !important; font-size: 0.85rem !important; padding: 10px 14px !important; }
+        .bubble-assistant { max-width: 90% !important; font-size: 0.85rem !important; padding: 10px 14px !important; }
+
+        /* 아바타 크기 축소 */
+        .avatar { width: 26px !important; height: 26px !important; font-size: 0.85rem !important; margin: 0 5px !important; }
+
+        /* 입력창 패딩·폰트 조정 */
+        .stTextInput > div > div > input {
+            padding: 10px 14px !important;
+            font-size: 0.85rem !important;
+            border-radius: 20px !important;
+        }
+
+        /* 전송 버튼 */
+        .stButton > button {
+            padding: 10px 16px !important;
+            font-size: 0.82rem !important;
+            border-radius: 20px !important;
+        }
+
+        /* 사이드바 카드 패딩 축소 */
+        .sidebar-card { padding: 10px 12px !important; margin-bottom: 8px !important; }
+        .sidebar-card h4 { font-size: 0.65rem !important; }
+        .sidebar-card p  { font-size: 0.76rem !important; }
+        .sidebar-card .value { font-size: 0.82rem !important; }
+        .sidebar-link { font-size: 0.72rem !important; padding: 5px 10px !important; }
+
+        /* 빈 채팅 안내 */
+        .empty-chat p { font-size: 0.82rem !important; }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       반응형 – 소형 모바일 (≤ 480px)
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 480px) {
+
+        .block-container {
+            padding-left: 0.4rem !important;
+            padding-right: 0.4rem !important;
+        }
+
+        .main-header {
+            padding: 18px 12px 16px !important;
+            border-radius: 12px !important;
+        }
+        .mama-title {
+            font-size: 1.05rem !important;
+        }
+        .mama-sub {
+            font-size: 0.75rem !important;
+        }
+
+        /* 말풍선 최대폭 확대 + 폰트 더 축소 */
+        .bubble-user      { max-width: 92% !important; font-size: 0.82rem !important; }
+        .bubble-assistant { max-width: 96% !important; font-size: 0.82rem !important; }
+
+        /* 아바타 숨김 – 극소형 화면 공간 절약 */
+        .avatar { display: none !important; }
+
+        /* 채팅 메시지 마진 축소 */
+        .chat-msg-user, .chat-msg-assistant { margin: 6px 0 !important; }
+
+        /* 입력창 */
+        .stTextInput > div > div > input {
+            font-size: 0.82rem !important;
+            padding: 9px 12px !important;
+        }
     }
 
     /* ── 숨기기 ──────────────────────────────────────────── */
