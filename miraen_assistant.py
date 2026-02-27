@@ -682,13 +682,30 @@ with col_input:
 with col_btn:
     send_clicked = st.button("전송 ✈️", use_container_width=True, type="primary")
 
-# 모바일 전용 대화 초기화 버튼 (사이드바가 숨겨지는 768px 이하에서만 노출)
+# 모바일 전용 대화 초기화 버튼
 if st.session_state.get("messages"):
-    st.markdown('<div class="mobile-clear-btn">', unsafe_allow_html=True)
     if st.button("🗑️ 대화 초기화", use_container_width=True, key="clear_btn_mobile"):
         st.session_state.messages = []
         st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
+    # JS로 PC(769px↑)에서는 이 버튼을 즉시 숨김
+    st.markdown("""
+        <script>
+        (function hide() {
+            const btns = window.parent.document.querySelectorAll('button');
+            btns.forEach(btn => {
+                if (btn.innerText.includes('대화 초기화')) {
+                    const col = btn.closest('[data-testid="stVerticalBlock"]');
+                    if (window.innerWidth > 768 && col) {
+                        col.style.display = 'none';
+                    }
+                }
+            });
+        })();
+        window.addEventListener('resize', hide);
+        setTimeout(hide, 200);
+        setTimeout(hide, 600);
+        </script>
+    """, unsafe_allow_html=True)
 
 # ──────────────────────────────────────────
 # 9. 응답 함수
