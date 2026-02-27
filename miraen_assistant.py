@@ -603,6 +603,16 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
+    # 문서 보안
+    st.markdown("""
+        <div class="sidebar-card">
+            <h4>🔒 문서보안 설정</h4>
+            <p>서버: <span class="value">doc.mirae-n.com</span></p>
+            <p>포트: <span class="value">443</span></p>
+            <p>계정: <span class="value">사번</span></p>
+        </div>
+    """, unsafe_allow_html=True)
+
     # 명함 신청
     st.markdown("""
         <div class="sidebar-card">
@@ -612,16 +622,6 @@ with st.sidebar:
                 🔗 명함 신청 바로가기
             </a>
             <p style="margin-top:8px;">ID: <span class="value">miraen</span> &nbsp;|&nbsp; PW: <span class="value">1111</span></p>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # 문서 보안
-    st.markdown("""
-        <div class="sidebar-card">
-            <h4>🔒 문서보안 설정</h4>
-            <p>서버: <span class="value">doc.mirae-n.com</span></p>
-            <p>포트: <span class="value">443</span></p>
-            <p>계정: <span class="value">사번</span></p>
         </div>
     """, unsafe_allow_html=True)
 
