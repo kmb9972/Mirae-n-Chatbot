@@ -386,11 +386,35 @@ st.markdown("""
         box-shadow: 0 3px 12px var(--ci-shadow) !important;
     }
     .stButton > button:hover {
-        background: var(--ci-dark) !important;   /* 호버 시 딥 블루 */
+        background: var(--ci-dark) !important;
         transform: translateY(-1px) !important;
         box-shadow: 0 5px 18px rgba(26, 83, 160, 0.30) !important;
     }
     .stButton > button:active {
+        transform: translateY(0) !important;
+    }
+
+    /* ── 대화 초기화 버튼 (딥 레드) ─────────────────────── */
+    .clear-btn > div > button,
+    .clear-btn button {
+        background: #D32F2F !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 24px !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        padding: 10px 20px !important;
+        box-shadow: 0 3px 12px rgba(211, 47, 47, 0.30) !important;
+        transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
+    }
+    .clear-btn > div > button:hover,
+    .clear-btn button:hover {
+        background: #B71C1C !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 5px 18px rgba(211, 47, 47, 0.40) !important;
+    }
+    .clear-btn > div > button:active,
+    .clear-btn button:active {
         transform: translateY(0) !important;
     }
 
@@ -634,7 +658,7 @@ if "messages" not in st.session_state:
         {
             "role": "assistant",
             "content": (
-                "안녕하세요! 👋 미래엔 임직원의 업무비서, MAMA입니다.\n\n"
+                "안녕하세요! 👋 미래엔의 스마트한 AI 어시스턴트, **MAMA**입니다.\n\n"
                 "인사와 복지에 대해 무엇을 도와드릴까요? 😊\n\n"
                 "예시) '플러스 휴가 알려줘', '출산 휴가 며칠이야?', '재택근무 규정은?'"
             )
@@ -1250,7 +1274,8 @@ if st.session_state.messages:
     st.markdown("<br>", unsafe_allow_html=True)
     col_clear = st.columns([4, 1])[1]
     with col_clear:
+        st.markdown('<div class="clear-btn">', unsafe_allow_html=True)
         if st.button("🗑️ 대화 초기화", use_container_width=True):
             st.session_state.messages = []
             st.rerun()
-
+        st.markdown('</div>', unsafe_allow_html=True)
