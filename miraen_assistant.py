@@ -123,36 +123,62 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+    /* =====================================================
+       미래엔 공식 CI 컬러 시스템
+       Primary  : #1A53A0  (미래엔 블루)
+       Dark     : #143F7A  (딥 블루 – hover/shadow용)
+       Light    : #E6EEF7  (연한 블루 – 봇 말풍선)
+       BG       : #F0F5FB  (전체 배경)
+       Text     : #0F2A52  (진한 텍스트)
+       ===================================================== */
+
     /* Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Pretendard:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    /* CSS 변수 */
+    :root {
+        --ci-blue      : #1A53A0;
+        --ci-dark      : #143F7A;
+        --ci-light     : #E6EEF7;
+        --ci-pale      : #F0F5FB;
+        --ci-border    : #C2D5EC;
+        --ci-text      : #0F2A52;
+        --ci-text-sub  : #4A6A96;
+        --ci-white     : #FFFFFF;
+        --ci-shadow    : rgba(26, 83, 160, 0.18);
+    }
 
     /* 전체 배경 */
     .stApp {
-        background: #F4F6FB;
+        background: var(--ci-pale);
         font-family: 'Noto Sans KR', sans-serif;
     }
 
-    /* 사이드바 */
+    /* ── 사이드바 ──────────────────────────────────────── */
     [data-testid="stSidebar"] {
-        background: linear-gradient(160deg, #1A3A6B 0%, #0D2247 100%);
+        background: var(--ci-blue) !important;
         border-right: none;
     }
+    /* 사이드바 내부 Streamlit 기본 배경 덮어쓰기 */
+    [data-testid="stSidebar"] > div:first-child {
+        background: var(--ci-blue) !important;
+    }
     [data-testid="stSidebar"] * {
-        color: #E8EEF8 !important;
+        color: var(--ci-white) !important;
     }
 
     /* 사이드바 카드 */
     .sidebar-card {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
+        background: rgba(255, 255, 255, 0.10);
+        border: 1px solid rgba(255, 255, 255, 0.20);
         border-radius: 12px;
         padding: 14px 16px;
         margin-bottom: 12px;
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(6px);
     }
     .sidebar-card h4 {
-        color: #7FB3F5 !important;
-        font-size: 0.75rem;
+        color: #A8CCEE !important;   /* 연한 하늘 – 카드 제목 */
+        font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -160,95 +186,93 @@ st.markdown("""
     }
     .sidebar-card p {
         font-size: 0.82rem;
-        color: #C8D8F0 !important;
+        color: rgba(255,255,255,0.75) !important;
         margin: 4px 0;
         line-height: 1.5;
     }
     .sidebar-card .value {
-        color: #FFFFFF !important;
-        font-weight: 600;
-        font-size: 0.88rem;
+        color: var(--ci-white) !important;
+        font-weight: 700;
+        font-size: 0.9rem;
     }
     .sidebar-link {
         display: inline-block;
-        background: rgba(127,179,245,0.2);
-        color: #7FB3F5 !important;
-        border: 1px solid rgba(127,179,245,0.4);
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--ci-white) !important;
+        border: 1px solid rgba(255, 255, 255, 0.30);
         border-radius: 8px;
-        padding: 6px 12px;
+        padding: 6px 14px;
         font-size: 0.8rem;
         font-weight: 600;
         text-decoration: none;
         margin-top: 4px;
-        transition: all 0.2s;
+        transition: background 0.2s;
     }
     .sidebar-link:hover {
-        background: rgba(127,179,245,0.35);
+        background: rgba(255, 255, 255, 0.28);
     }
 
-    /* 메인 헤더 */
+    /* ── 메인 헤더 ──────────────────────────────────────── */
     .main-header {
-        background: linear-gradient(135deg, #1A3A6B 0%, #2A5298 100%);
+        background: var(--ci-blue);          /* 단색 – 공식 CI */
         border-radius: 16px;
         padding: 28px 32px;
         margin-bottom: 24px;
         display: flex;
         align-items: center;
         gap: 16px;
-        box-shadow: 0 4px 24px rgba(26,58,107,0.18);
+        box-shadow: 0 4px 24px var(--ci-shadow);
     }
     .main-header h1 {
-        color: #FFFFFF !important;
-        font-size: 1.6rem;
+        color: var(--ci-white) !important;
+        font-size: 1.55rem;
         font-weight: 700;
         margin: 0;
     }
     .main-header p {
-        color: #A8C4E8 !important;
+        color: rgba(255, 255, 255, 0.78) !important;
         font-size: 0.88rem;
         margin: 4px 0 0 0;
     }
 
-    /* 빠른 질문 버튼 */
-    .quick-btn-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin-bottom: 20px;
-    }
-
-    /* 채팅 메시지 */
+    /* ── 말풍선 ──────────────────────────────────────────── */
     .chat-msg-user {
         display: flex;
         justify-content: flex-end;
-        margin: 8px 0;
+        margin: 10px 0;
     }
     .chat-msg-assistant {
         display: flex;
         justify-content: flex-start;
-        margin: 8px 0;
+        margin: 10px 0;
     }
+
+    /* 사용자 말풍선 – 미래엔 블루 그라데이션 */
     .bubble-user {
-        background: linear-gradient(135deg, #2A5298, #1A3A6B);
-        color: #FFFFFF;
+        background: linear-gradient(135deg, #1A53A0 0%, #143F7A 100%);
+        color: var(--ci-white);
         border-radius: 18px 18px 4px 18px;
         padding: 12px 18px;
         max-width: 70%;
         font-size: 0.9rem;
-        line-height: 1.6;
-        box-shadow: 0 2px 12px rgba(26,58,107,0.2);
+        line-height: 1.65;
+        box-shadow: 0 3px 14px rgba(26, 83, 160, 0.30);
     }
+
+    /* 봇 말풍선 – 연한 블루 배경 + 진한 텍스트 */
     .bubble-assistant {
-        background: #FFFFFF;
-        color: #1A2B4A;
+        background: var(--ci-light);          /* #E6EEF7 */
+        color: var(--ci-text);                /* #0F2A52 */
         border-radius: 18px 18px 18px 4px;
         padding: 12px 18px;
         max-width: 75%;
         font-size: 0.9rem;
-        line-height: 1.7;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        border: 1px solid #E4EAF6;
+        line-height: 1.75;
+        box-shadow: 0 2px 10px rgba(26, 83, 160, 0.08);
+        border: 1px solid var(--ci-border);   /* #C2D5EC */
     }
+
+    /* 아바타 */
     .avatar {
         width: 32px;
         height: 32px;
@@ -260,98 +284,105 @@ st.markdown("""
         flex-shrink: 0;
         margin: 0 8px;
     }
-    .avatar-user { background: #2A5298; }
-    .avatar-bot  { background: linear-gradient(135deg,#1A3A6B,#2A5298); }
+    .avatar-user { background: var(--ci-dark); }
+    .avatar-bot  { background: var(--ci-blue); }
 
-    /* 입력창 */
+    /* ── 입력창 ──────────────────────────────────────────── */
     .stTextInput > div > div > input {
         border-radius: 24px !important;
-        border: 2px solid #D0DCEF !important;
+        border: 2px solid var(--ci-border) !important;
         padding: 12px 20px !important;
         font-size: 0.92rem !important;
-        background: #FFFFFF !important;
-        transition: border-color 0.2s;
+        background: var(--ci-white) !important;
+        color: var(--ci-text) !important;
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
     .stTextInput > div > div > input:focus {
-        border-color: #2A5298 !important;
-        box-shadow: 0 0 0 3px rgba(42,82,152,0.1) !important;
+        border-color: var(--ci-blue) !important;
+        box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
     }
 
-    /* 전송 버튼 */
+    /* ── 전송 버튼 (모든 stButton 공통) ─────────────────── */
     .stButton > button {
         border-radius: 24px !important;
-        background: linear-gradient(135deg, #2A5298, #1A3A6B) !important;
-        color: #FFFFFF !important;
+        background: var(--ci-blue) !important;
+        color: var(--ci-white) !important;
         border: none !important;
         font-weight: 600 !important;
         font-size: 0.9rem !important;
         padding: 12px 28px !important;
-        transition: all 0.2s !important;
-        box-shadow: 0 3px 12px rgba(26,58,107,0.25) !important;
+        transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
+        box-shadow: 0 3px 12px var(--ci-shadow) !important;
     }
     .stButton > button:hover {
+        background: var(--ci-dark) !important;   /* 호버 시 딥 블루 */
         transform: translateY(-1px) !important;
-        box-shadow: 0 5px 18px rgba(26,58,107,0.35) !important;
+        box-shadow: 0 5px 18px rgba(26, 83, 160, 0.30) !important;
+    }
+    .stButton > button:active {
+        transform: translateY(0) !important;
     }
 
-    /* 빠른 질문 버튼 */
+    /* ── 빠른 질문 버튼 (outline 스타일) ────────────────── */
     .quick-btn > button {
-        background: #FFFFFF !important;
-        color: #2A5298 !important;
-        border: 1.5px solid #C0D0E8 !important;
+        background: var(--ci-white) !important;
+        color: var(--ci-blue) !important;
+        border: 1.5px solid var(--ci-border) !important;
         border-radius: 20px !important;
         font-size: 0.78rem !important;
         padding: 6px 12px !important;
         font-weight: 500 !important;
         width: 100% !important;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+        box-shadow: 0 1px 4px rgba(26, 83, 160, 0.06) !important;
+        transition: background 0.15s, border-color 0.15s, color 0.15s !important;
     }
     .quick-btn > button:hover {
-        background: #EEF3FC !important;
-        border-color: #2A5298 !important;
+        background: var(--ci-light) !important;   /* 연한 블루 */
+        border-color: var(--ci-blue) !important;
+        color: var(--ci-dark) !important;
     }
 
-    /* 구분선 */
-    hr { border-color: rgba(255,255,255,0.1) !important; }
+    /* ── 구분선 ──────────────────────────────────────────── */
+    hr { border-color: rgba(255, 255, 255, 0.15) !important; }
 
-    /* 채팅 컨테이너 */
+    /* ── 채팅 컨테이너 ───────────────────────────────────── */
     .chat-container {
-        background: #F9FAFF;
+        background: #F7FAFD;
         border-radius: 16px;
         padding: 20px;
-        border: 1px solid #E4EAF6;
+        border: 1px solid var(--ci-border);
         min-height: 420px;
         max-height: 520px;
         overflow-y: auto;
         margin-bottom: 16px;
     }
 
-    /* 빈 채팅 안내 */
+    /* ── 빈 채팅 안내 ────────────────────────────────────── */
     .empty-chat {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         height: 300px;
-        color: #8A9BBD;
+        color: var(--ci-text-sub);
     }
     .empty-chat .icon { font-size: 3rem; margin-bottom: 12px; }
     .empty-chat p { font-size: 0.9rem; text-align: center; line-height: 1.6; }
 
-    /* 로딩 */
+    /* ── 로딩 도트 ────────────────────────────────────────── */
     .typing-indicator {
         display: flex;
         gap: 4px;
         padding: 12px 18px;
-        background: #FFFFFF;
+        background: var(--ci-light);
         border-radius: 18px 18px 18px 4px;
         width: fit-content;
-        border: 1px solid #E4EAF6;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border: 1px solid var(--ci-border);
+        box-shadow: 0 2px 8px rgba(26, 83, 160, 0.07);
     }
     .dot {
         width: 8px; height: 8px;
-        background: #2A5298;
+        background: var(--ci-blue);
         border-radius: 50%;
         animation: bounce 1.2s infinite;
     }
@@ -359,10 +390,10 @@ st.markdown("""
     .dot:nth-child(3) { animation-delay: 0.4s; }
     @keyframes bounce {
         0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-        40% { transform: scale(1); opacity: 1; }
+        40%           { transform: scale(1);   opacity: 1;   }
     }
 
-    /* 숨기기 */
+    /* ── 숨기기 ──────────────────────────────────────────── */
     #MainMenu, footer, header { visibility: hidden; }
     .block-container { padding-top: 1.5rem !important; }
 </style>
@@ -377,7 +408,7 @@ with st.sidebar:
         <div style="text-align:center; padding: 8px 0 20px;">
             <div style="font-size:2.4rem;">🏢</div>
             <div style="font-size:1.15rem; font-weight:700; color:#FFFFFF; margin-top:6px;">미래엔 사내 비서</div>
-            <div style="font-size:0.75rem; color:#7FB3F5; margin-top:3px;">MiraeN Internal Assistant</div>
+            <div style="font-size:0.75rem; color:rgba(255,255,255,0.65); margin-top:3px;">MiraeN Internal Assistant</div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -389,10 +420,10 @@ with st.sidebar:
             <h4>📶 WIFI 정보</h4>
             <p>직원용</p>
             <p class="value">MiraeN-AP</p>
-            <p style="color:#7FB3F5 !important; font-size:0.75rem;">PW: 19480924ab</p>
+            <p style="color:rgba(255,255,255,0.6) !important; font-size:0.75rem;">PW: 19480924ab</p>
             <p style="margin-top:10px;">외부 방문객용</p>
             <p class="value">MiraeN-WIfI</p>
-            <p style="color:#7FB3F5 !important; font-size:0.75rem;">PW: 34753800</p>
+            <p style="color:rgba(255,255,255,0.6) !important; font-size:0.75rem;">PW: 34753800</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -425,7 +456,7 @@ with st.sidebar:
             <a class="sidebar-link" href="https://gw.mirae-n.com" target="_blank">
                 🔗 그룹웨어 접속
             </a>
-            <p style="margin-top:8px; font-size:0.75rem; color:#8AAAD0 !important;">
+            <p style="margin-top:8px; font-size:0.75rem; color:rgba(255,255,255,0.6) !important;">
                 경조사 신고서 · 휴가신청 · 전자결재
             </p>
         </div>
@@ -438,7 +469,7 @@ with st.sidebar:
             <a class="sidebar-link" href="https://www.shiftee.io" target="_blank">
                 🔗 시프티 접속
             </a>
-            <p style="margin-top:8px; font-size:0.75rem; color:#8AAAD0 !important;">
+            <p style="margin-top:8px; font-size:0.75rem; color:rgba(255,255,255,0.6) !important;">
                 휴가 입력 · 연장근무 신청
             </p>
         </div>
@@ -446,7 +477,7 @@ with st.sidebar:
 
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("""
-        <div style="text-align:center; font-size:0.72rem; color:#567AAA; padding: 4px 0;">
+        <div style="text-align:center; font-size:0.72rem; color:rgba(255,255,255,0.45); padding: 4px 0;">
             인사지원팀 문의: 내선 1234<br>
             © 2025 MiraeN Co., Ltd.
         </div>
@@ -485,7 +516,7 @@ QUICK_QUESTIONS = [
     "🏠 재택근무 규정 알려줘",
 ]
 
-st.markdown("<p style='font-size:0.82rem; color:#8A9BBD; margin-bottom:8px;'>💡 자주 묻는 질문</p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size:0.82rem; color:#4A6A96; margin-bottom:8px;'>💡 자주 묻는 질문</p>", unsafe_allow_html=True)
 
 cols = st.columns(3)
 for i, q in enumerate(QUICK_QUESTIONS):
