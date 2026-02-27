@@ -115,10 +115,10 @@ SYSTEM_PROMPT = f"""당신은 미래엔(MiraeN) 회사의 사내 비서입니다
 # 3. 페이지 설정 & 커스텀 CSS
 # ──────────────────────────────────────────
 st.set_page_config(
-    page_title="미래엔 사내 비서",
-    page_icon="🏢",
+    page_title="MAMA – MiraeN Assistant",
+    page_icon="🤖",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="expanded",   # 사이드바 항상 열린 상태로 고정
 )
 
 st.markdown("""
@@ -214,18 +214,81 @@ st.markdown("""
 
     /* ── 메인 헤더 ──────────────────────────────────────── */
     .main-header {
-        background: var(--ci-blue);          /* 단색 – 공식 CI */
-        border-radius: 16px;
-        padding: 28px 32px;
-        margin-bottom: 24px;
-        display: flex;
+        background: var(--ci-blue);
+        border-radius: 20px;
+        padding: 40px 32px 36px;
+        margin-bottom: 28px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 6px 32px var(--ci-shadow);
+    }
+    /* 배경 장식 원 */
+    .main-header::before {
+        content: '';
+        position: absolute;
+        top: -60px; right: -60px;
+        width: 220px; height: 220px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.06);
+        pointer-events: none;
+    }
+    .main-header::after {
+        content: '';
+        position: absolute;
+        bottom: -40px; left: -40px;
+        width: 160px; height: 160px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+        pointer-events: none;
+    }
+    .mama-badge {
+        display: inline-flex;
         align-items: center;
-        gap: 16px;
-        box-shadow: 0 4px 24px var(--ci-shadow);
+        gap: 8px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 100px;
+        padding: 5px 16px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.90) !important;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+    }
+    .mama-title {
+        color: var(--ci-white) !important;
+        font-size: 1.75rem;
+        font-weight: 800;
+        margin: 0 0 12px 0;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+    }
+    .mama-title em {
+        font-style: normal;
+        color: #A8CCEE;
+    }
+    .mama-sub {
+        color: rgba(255,255,255,0.72) !important;
+        font-size: 0.9rem;
+        margin: 0 0 16px 0;
+        line-height: 1.6;
+    }
+    .mama-mock-badge {
+        display: inline-block;
+        background: rgba(255,200,0,0.18);
+        border: 1px solid rgba(255,200,0,0.45);
+        color: #FFD966 !important;
+        border-radius: 20px;
+        padding: 3px 14px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
     }
     .main-header h1 {
         color: var(--ci-white) !important;
-        font-size: 1.55rem;
+        font-size: 1.6rem;
         font-weight: 700;
         margin: 0;
     }
@@ -386,10 +449,14 @@ st.markdown("""
 with st.sidebar:
     # 로고/타이틀
     st.markdown("""
-        <div style="text-align:center; padding: 8px 0 20px;">
-            <div style="font-size:2.4rem;">🏢</div>
-            <div style="font-size:1.15rem; font-weight:700; color:#FFFFFF; margin-top:6px;">미래엔 사내 비서</div>
-            <div style="font-size:0.75rem; color:rgba(255,255,255,0.65); margin-top:3px;">MiraeN Internal Assistant</div>
+        <div style="text-align:center; padding: 12px 0 20px;">
+            <div style="font-size:2.6rem; line-height:1;">🤖</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#FFFFFF; margin-top:8px; letter-spacing:-0.01em;">
+                MAMA
+            </div>
+            <div style="font-size:0.68rem; color:rgba(255,255,255,0.55); margin-top:3px; letter-spacing:0.06em; text-transform:uppercase;">
+                MiraeN AI, Miraen Assistant
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
@@ -465,25 +532,32 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
 # ──────────────────────────────────────────
-# 5. 메인 화면
+# 5. 메인 화면 (MAMA 헤더 + 채팅)
 # ──────────────────────────────────────────
-# 헤더
 st.markdown("""
     <div class="main-header">
-        <div style="font-size:2.2rem;">🤖</div>
-        <div>
-            <h1>안녕하세요, 미래엔 사내 비서입니다 👋</h1>
-            <p>인사·복지·행정 관련 궁금한 점을 편하게 질문해 주세요. 지식 베이스 기반으로 정확하게 답변드립니다.</p>
-            <span style="display:inline-block; margin-top:8px; background:rgba(255,200,0,0.2); border:1px solid rgba(255,200,0,0.5); color:#FFD966; border-radius:20px; padding:3px 12px; font-size:0.72rem; font-weight:600; letter-spacing:0.05em;">
-                🧪 MOCK 모드 · API 키 없이 테스트 중
-            </span>
-        </div>
+        <div class="mama-badge">🤖 &nbsp; MiraeN AI Assistant</div>
+        <h1 class="mama-title">
+            궁금한 인사·복지 정보?<br>
+            <em>MAMA</em>에게 물어보세요! 😊
+        </h1>
+        <p class="mama-sub">미래엔 임직원을 위한 따뜻한 AI 비서, MAMA가 대기 중입니다.</p>
+        <span class="mama-mock-badge">🧪 MOCK 모드 · API 키 없이 테스트 중</span>
     </div>
 """, unsafe_allow_html=True)
 
-# 세션 상태 초기화
+# 세션 상태 초기화 + MAMA 첫 인삿말 자동 주입
 if "messages" not in st.session_state:
-    st.session_state.messages = []
+    st.session_state.messages = [
+        {
+            "role": "assistant",
+            "content": (
+                "안녕하세요! 👋 미래엔의 스마트한 AI 어시스턴트, **MAMA**입니다.\n\n"
+                "인사와 복지에 대해 무엇을 도와드릴까요? 😊\n\n"
+                "예시) '플러스 휴가 알려줘', '출산 휴가 며칠이야?', '재택근무 규정은?'"
+            )
+        }
+    ]
 
 # ──────────────────────────────────────────
 # 6. 채팅 메시지 렌더링
@@ -495,7 +569,7 @@ with chat_area:
         st.markdown("""
             <div class="empty-chat">
                 <div class="icon">💬</div>
-                <p>아직 대화가 없어요.<br>아래 입력창에 궁금한 점을 질문해 주세요! 😊</p>
+                <p>MAMA가 대기 중이에요! 😊<br>아래 입력창에 궁금한 점을 질문해 주세요.</p>
             </div>
         """, unsafe_allow_html=True)
     else:
