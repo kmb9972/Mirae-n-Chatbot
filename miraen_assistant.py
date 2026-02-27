@@ -167,6 +167,10 @@ st.markdown("""
     [data-testid="stSidebar"] {
         background: var(--ci-blue) !important;
         border-right: none;
+        display: block !important;          /* 강제 표시 */
+        visibility: visible !important;
+        transform: none !important;         /* Streamlit 자동 슬라이드 아웃 차단 */
+        min-width: 240px !important;
     }
     /* 사이드바 내부 Streamlit 기본 배경 덮어쓰기 */
     [data-testid="stSidebar"] > div:first-child {
@@ -174,6 +178,10 @@ st.markdown("""
     }
     [data-testid="stSidebar"] * {
         color: var(--ci-white) !important;
+    }
+    /* 사이드바 토글 버튼 숨김 – 닫기 버튼 제거 */
+    [data-testid="collapsedControl"] {
+        display: none !important;
     }
 
     /* 사이드바 카드 */
