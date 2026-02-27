@@ -188,7 +188,7 @@ st.markdown("""
 
     /* ── 사이드바 (PC: 항상 고정 표시) ─────────────────── */
     [data-testid="stSidebar"] {
-        background-image: url('https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/SIDE%20BAR.png?raw=true') !important;
+        background-image: url('https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/SIDE.png?raw=true') !important;
         background-size: cover !important;
         background-position: top center !important;
         background-repeat: no-repeat !important;
