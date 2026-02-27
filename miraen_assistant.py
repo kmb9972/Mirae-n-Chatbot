@@ -290,62 +290,6 @@ st.markdown("""
         background: rgba(255,255,255,0.05);
         pointer-events: none;
     }
-    .mama-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.25);
-        border-radius: 100px;
-        padding: 5px 16px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: rgba(255,255,255,0.90) !important;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        margin-bottom: 18px;
-    }
-    .mama-title {
-        color: var(--ci-white) !important;
-        font-size: 1.75rem;
-        font-weight: 800;
-        margin: 0 0 12px 0;
-        line-height: 1.3;
-        letter-spacing: -0.01em;
-    }
-    .mama-title em {
-        font-style: normal;
-        color: #A8CCEE;
-    }
-    .mama-sub {
-        color: rgba(255,255,255,0.72) !important;
-        font-size: 0.9rem;
-        margin: 0 0 16px 0;
-        line-height: 1.6;
-    }
-    .mama-mock-badge {
-        display: inline-block;
-        background: rgba(255,200,0,0.18);
-        border: 1px solid rgba(255,200,0,0.45);
-        color: #FFD966 !important;
-        border-radius: 20px;
-        padding: 3px 14px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-    }
-    .main-header h1 {
-        color: var(--ci-white) !important;
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin: 0;
-    }
-    .main-header p {
-        color: rgba(255, 255, 255, 0.78) !important;
-        font-size: 0.88rem;
-        margin: 4px 0 0 0;
-    }
-
     /* ── 말풍선 ──────────────────────────────────────────── */
     .chat-msg-user {
         display: flex;
@@ -511,30 +455,6 @@ st.markdown("""
             max-width: 100% !important;
         }
 
-        /* 헤더 패딩·폰트 축소 */
-        .main-header {
-            padding: 24px 16px 20px !important;
-            border-radius: 14px !important;
-            margin-bottom: 16px !important;
-        }
-        .mama-title {
-            font-size: 1.25rem !important;
-            line-height: 1.4 !important;
-            word-break: keep-all !important;
-        }
-        .mama-sub {
-            font-size: 0.8rem !important;
-            line-height: 1.55 !important;
-        }
-        .mama-badge {
-            font-size: 0.65rem !important;
-            padding: 4px 12px !important;
-            margin-bottom: 12px !important;
-        }
-        .mama-mock-badge {
-            font-size: 0.62rem !important;
-        }
-
         /* 말풍선 너비 확대 – 모바일에서 더 넓게 */
         .bubble-user      { max-width: 86% !important; font-size: 0.85rem !important; padding: 10px 14px !important; }
         .bubble-assistant { max-width: 90% !important; font-size: 0.85rem !important; padding: 10px 14px !important; }
@@ -577,17 +497,6 @@ st.markdown("""
             padding-right: 0.4rem !important;
         }
 
-        .main-header {
-            padding: 18px 12px 16px !important;
-            border-radius: 12px !important;
-        }
-        .mama-title {
-            font-size: 1.05rem !important;
-        }
-        .mama-sub {
-            font-size: 0.75rem !important;
-        }
-
         /* 말풍선 최대폭 확대 + 폰트 더 축소 */
         .bubble-user      { max-width: 92% !important; font-size: 0.82rem !important; }
         .bubble-assistant { max-width: 96% !important; font-size: 0.82rem !important; }
@@ -606,9 +515,24 @@ st.markdown("""
         }
     }
 
-    /* ── 숨기기 ──────────────────────────────────────────── */
-    #MainMenu, footer, header { visibility: hidden; }
-    .block-container { padding-top: 1.5rem !important; }
+    /* ── Streamlit 기본 UI 완전 제거 ────────────────────── */
+    #MainMenu, footer, header { visibility: hidden; height: 0 !important; }
+
+    /* 툴바(Deploy 버튼 등) 숨김 */
+    [data-testid="stToolbar"],
+    [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"] {
+        display: none !important;
+    }
+
+    /* 최상단 여백 완전 제거 → 배너가 브라우저에 딱 붙게 */
+    .block-container {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    .appview-container .main .block-container {
+        padding-top: 0 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -701,18 +625,15 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
 # ──────────────────────────────────────────
-# 5. 메인 화면 (MAMA 헤더 + 채팅)
+# 5. 메인 화면 (배너 + 채팅)
 # ──────────────────────────────────────────
 st.markdown("""
-    <div class="main-header">
-        <div class="mama-badge">🤖 &nbsp; MiraeN AI Assistant</div>
-        <h1 class="mama-title">
-            궁금한 인사·복지 정보?<br>
-            <em>MAMA</em>에게 물어보세요! 😊
-        </h1>
-        <p class="mama-sub">미래엔 임직원을 위한 따뜻한 AI 비서, MAMA가 대기 중입니다.</p>
-        <span class="mama-mock-badge">🧪 MOCK 모드 · API 키 없이 테스트 중</span>
+    <div style="margin: 0; padding: 0; line-height: 0;">
+        <img src="https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/WEB%20BANNER.png?raw=true"
+             alt="MAMA 배너"
+             style="width:100%; height:auto; display:block; margin:0; padding:0;">
     </div>
+    <div style="margin-bottom: 20px;"></div>
 """, unsafe_allow_html=True)
 
 # 세션 상태 초기화 + MAMA 첫 인삿말 자동 주입
