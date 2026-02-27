@@ -378,19 +378,8 @@ st.markdown("""
     }
     .avatar-user { background: var(--ci-dark); }
     .avatar-bot  {
-        background-image: url('https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/MAMA.png?raw=true');
-        background-size: 110%;              /* scale과 동일 효과 – 여백 없이 꽉 채움 */
-        background-position: center;
-        background-repeat: no-repeat;
-        background-color: var(--ci-blue);   /* 이미지 로딩 전 fallback */
-        width: 40px !important;
-        height: 40px !important;
-        border-radius: 50% !important;
-        font-size: 0;                       /* 이모지 텍스트 완전 숨김 */
-        border: 2px solid rgba(255,255,255,0.3);
-        box-shadow: 0 2px 8px rgba(26, 83, 160, 0.25);
-        overflow: hidden;
-        flex-shrink: 0;
+        background: var(--ci-blue);
+        font-size: 1rem;
     }
 
     /* ── 입력창 ──────────────────────────────────────────── */
@@ -735,7 +724,7 @@ with chat_area:
             else:
                 st.markdown(f"""
                     <div class="chat-msg-assistant">
-                        <div class="avatar avatar-bot"></div>
+                        <div class="avatar avatar-bot">🤖</div>
                         <div class="bubble-assistant">{msg["content"]}</div>
                     </div>
                 """, unsafe_allow_html=True)
