@@ -373,7 +373,7 @@ st.markdown("""
         box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
     }
 
-    /* ── 전송 버튼 (모든 stButton 공통) ─────────────────── */
+    /* ── 버튼 공통 (블루) ────────────────────────────────── */
     .stButton > button {
         border-radius: 24px !important;
         background: var(--ci-blue) !important;
@@ -392,37 +392,6 @@ st.markdown("""
     }
     .stButton > button:active {
         transform: translateY(0) !important;
-    }
-
-    /* ── 대화 초기화 버튼 (딥 레드) ─────────────────────── */
-    .clear-btn > div > button,
-    .clear-btn button {
-        background: #D32F2F !important;
-        color: #FFFFFF !important;
-        border: none !important;
-        border-radius: 24px !important;
-        font-weight: 600 !important;
-        font-size: 0.85rem !important;
-        padding: 10px 20px !important;
-        box-shadow: 0 3px 12px rgba(211, 47, 47, 0.30) !important;
-        transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
-    }
-    .clear-btn > div > button:hover,
-    .clear-btn button:hover {
-        background: #B71C1C !important;
-        transform: translateY(-1px) !important;
-        box-shadow: 0 5px 18px rgba(211, 47, 47, 0.40) !important;
-    }
-    .clear-btn > div > button:active,
-    .clear-btn button:active {
-        transform: translateY(0) !important;
-    }
-
-    /* 초기화 버튼 컬럼 식별용 */
-    [data-testid="stButton"]:has(button[kind="secondary"]) button,
-    button[data-testid="baseButton-secondary"] {
-        background: #D32F2F !important;
-        color: #FFFFFF !important;
     }
 
     /* ── 구분선 ──────────────────────────────────────────── */
@@ -719,7 +688,7 @@ with col_input:
     )
 
 with col_btn:
-    send_clicked = st.button("전송 ✈️", use_container_width=True)
+    send_clicked = st.button("전송 ✈️", use_container_width=True, type="primary")
 
 # ──────────────────────────────────────────
 # 9. 응답 함수
@@ -1281,8 +1250,29 @@ if st.session_state.messages:
     st.markdown("<br>", unsafe_allow_html=True)
     col_clear = st.columns([4, 1])[1]
     with col_clear:
-        st.markdown('<div class="clear-btn">', unsafe_allow_html=True)
-        if st.button("🗑️ 대화 초기화", use_container_width=True, type="secondary", key="clear_btn"):
+        if st.button("🗑️ 대화 초기화", use_container_width=True, key="clear_btn"):
             st.session_state.messages = []
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+
+    # JS로 버튼 텍스트 기준 딥 레드 직접 주입
+    st.markdown("""
+        <script>
+        (function() {
+            function paintClearBtn() {
+                const btns = window.parent.document.querySelectorAll('button');
+                btns.forEach(btn => {
+                    if (btn.innerText.includes('대화 초기화')) {
+                        btn.style.setProperty('background', '#D32F2F', 'important');
+                        btn.style.setProperty('color', '#FFFFFF', 'important');
+                        btn.style.setProperty('box-shadow', '0 3px 12px rgba(211,47,47,0.35)', 'important');
+                        btn.onmouseover = () => btn.style.setProperty('background', '#B71C1C', 'important');
+                        btn.onmouseout  = () => btn.style.setProperty('background', '#D32F2F', 'important');
+                    }
+                });
+            }
+            paintClearBtn();
+            setTimeout(paintClearBtn, 300);
+            setTimeout(paintClearBtn, 800);
+        })();
+        </script>
+    """, unsafe_allow_html=True)
