@@ -101,7 +101,7 @@ SYSTEM_PROMPT = f"""당신은 미래엔(MiraeN) 회사의 사내 비서입니다
 직원들의 인사, 복지, 행정 관련 질문에 아래 지식 베이스를 근거로 친절하고 정확하게 답변하세요.
 
 [답변 원칙]
-1. 지식 베이스에 있는 내용만 답변하고, 없는 내용은 "해당 내용은 지식 베이스에 없어 인사지원팀에 문의해 주세요."라고 안내하세요.
+1. 지식 베이스에 있는 내용만 답변하고, 없는 내용은 "해당 내용은 확인이 어려우니 인사지원팀에 문의해 주세요."라고 안내하세요.
 2. 결재 관련 질문에는 반드시 전결권자, 필요 서류, 관련 부서를 함께 안내하세요.
 3. 신청 방법이 있을 경우 그룹웨어 메뉴명이나 시스템 경로도 안내하세요.
 4. 답변은 한국어로, 따뜻하고 친근한 말투를 사용하세요.
@@ -323,25 +323,6 @@ st.markdown("""
         transform: translateY(0) !important;
     }
 
-    /* ── 빠른 질문 버튼 (outline 스타일) ────────────────── */
-    .quick-btn > button {
-        background: var(--ci-white) !important;
-        color: var(--ci-blue) !important;
-        border: 1.5px solid var(--ci-border) !important;
-        border-radius: 20px !important;
-        font-size: 0.78rem !important;
-        padding: 6px 12px !important;
-        font-weight: 500 !important;
-        width: 100% !important;
-        box-shadow: 0 1px 4px rgba(26, 83, 160, 0.06) !important;
-        transition: background 0.15s, border-color 0.15s, color 0.15s !important;
-    }
-    .quick-btn > button:hover {
-        background: var(--ci-light) !important;   /* 연한 블루 */
-        border-color: var(--ci-blue) !important;
-        color: var(--ci-dark) !important;
-    }
-
     /* ── 구분선 ──────────────────────────────────────────── */
     hr { border-color: rgba(255, 255, 255, 0.15) !important; }
 
@@ -478,7 +459,7 @@ with st.sidebar:
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("""
         <div style="text-align:center; font-size:0.72rem; color:rgba(255,255,255,0.45); padding: 4px 0;">
-            인사지원팀 문의: 내선 1234<br>
+            문의: 인사지원팀<br>
             © 2025 MiraeN Co., Ltd.
         </div>
     """, unsafe_allow_html=True)
@@ -505,33 +486,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # ──────────────────────────────────────────
-# 6. 빠른 질문 버튼
-# ──────────────────────────────────────────
-QUICK_QUESTIONS = [
-    "🍼 육아휴직 및 보육비 지원 알려줘",
-    "💐 경조사 휴가일수와 경조금 기준은?",
-    "🏖️ 플러스 휴가가 뭐야?",
-    "✅ 출장 신청 결재선이 어떻게 돼?",
-    "📚 자격증 취득 지원금 얼마야?",
-    "🏠 재택근무 규정 알려줘",
-]
-
-st.markdown("<p style='font-size:0.82rem; color:#4A6A96; margin-bottom:8px;'>💡 자주 묻는 질문</p>", unsafe_allow_html=True)
-
-cols = st.columns(3)
-for i, q in enumerate(QUICK_QUESTIONS):
-    with cols[i % 3]:
-        with st.container():
-            st.markdown('<div class="quick-btn">', unsafe_allow_html=True)
-            if st.button(q, key=f"quick_{i}"):
-                st.session_state.messages.append({"role": "user", "content": q})
-                st.session_state.pending_response = True
-            st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-# ──────────────────────────────────────────
-# 7. 채팅 메시지 렌더링
+# 6. 채팅 메시지 렌더링
 # ──────────────────────────────────────────
 chat_area = st.container()
 
@@ -540,7 +495,7 @@ with chat_area:
         st.markdown("""
             <div class="empty-chat">
                 <div class="icon">💬</div>
-                <p>아직 대화가 없습니다.<br>위 빠른 질문을 클릭하거나,<br>아래 입력창에 질문을 입력해 주세요.</p>
+                <p>아직 대화가 없어요.<br>아래 입력창에 궁금한 점을 질문해 주세요! 😊</p>
             </div>
         """, unsafe_allow_html=True)
     else:
@@ -997,7 +952,7 @@ def get_mock_response(messages_history: list) -> str:
         "- 사외교육 신청\n"
         "- WIFI / 문서보안 / 명함 신청\n"
         "- 학자금 / 입학 선물\n\n"
-        "📞 지식 베이스에 없는 내용은 **인사지원팀 내선 1234**로 문의해 주세요!"
+        "📞 지식 베이스에 없는 내용은 **인사지원팀**에 문의해 주세요!"
     )
 
 # ── [Mock 모드 끝] ────────────────────────────────────────────────────────────
@@ -1028,20 +983,9 @@ def handle_send(question: str):
     st.rerun()
 
 
-# 전송 버튼 / 엔터
+# 전송 버튼으로 메시지 전송
 if send_clicked and user_input:
     handle_send(user_input)
-elif hasattr(st.session_state, "pending_response") and st.session_state.pending_response:
-    st.session_state.pending_response = False
-    # 빠른 질문 처리: 마지막 user 메시지에 대한 응답
-    last_user = st.session_state.messages[-1]["content"]
-    with st.spinner("답변을 생성하고 있습니다..."):
-        try:
-            answer = get_ai_response(st.session_state.messages)
-        except Exception as e:
-            answer = f"⚠️ Mock 응답 중 오류가 발생했습니다: {str(e)}"
-    st.session_state.messages.append({"role": "assistant", "content": answer})
-    st.rerun()
 
 # ──────────────────────────────────────────
 # 10. 대화 초기화 버튼
