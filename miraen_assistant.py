@@ -163,11 +163,11 @@ st.markdown("""
         word-wrap: break-word;         /* 구형 브라우저 호환 */
     }
 
-    /* ── 사이드바 ──────────────────────────────────────── */
+    /* ── 사이드바 (PC: 항상 고정 표시) ─────────────────── */
     [data-testid="stSidebar"] {
         background: var(--ci-blue) !important;
         border-right: none;
-        display: block !important;          /* 강제 표시 */
+        display: block !important;
         visibility: visible !important;
         transform: none !important;         /* Streamlit 자동 슬라이드 아웃 차단 */
         min-width: 240px !important;
@@ -179,9 +179,22 @@ st.markdown("""
     [data-testid="stSidebar"] * {
         color: var(--ci-white) !important;
     }
-    /* 사이드바 토글 버튼 숨김 – 닫기 버튼 제거 */
+    /* PC: 토글 버튼 숨김 */
     [data-testid="collapsedControl"] {
         display: none !important;
+    }
+
+    /* ── 사이드바 (모바일 ≤ 768px: 토글 복원) ───────────── */
+    @media (max-width: 768px) {
+        /* 강제 고정 해제 → Streamlit 기본 동작으로 복귀 */
+        [data-testid="stSidebar"] {
+            transform: unset !important;
+            min-width: unset !important;
+        }
+        /* 토글 버튼 다시 표시 */
+        [data-testid="collapsedControl"] {
+            display: flex !important;
+        }
     }
 
     /* 사이드바 카드 */
