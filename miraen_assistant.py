@@ -77,7 +77,9 @@ KNOWLEDGE_BASE = """
 - 직원용 WIFI: MiraeN-AP / PW: 19480924ab
 - 외부용 WIFI: MiraeN-WIfI / PW: 34753800
 - 문서보안: 서버 doc.mirae-n.com, 포트 443, 계정은 사번.
-- 명함 신청: mirae-n.onehp.co.kr / ID: miraen / PW: 1111
+- 명함 신청: 사이트 mirae-n.onehp.co.kr 접속 / ID: miraen / PW: 1111
+- 그룹웨어: https://gw.mirae-n.com / 경조사 신고서·휴가신청·전자결재 메뉴 이용.
+- 근태 관리(시프티/Shiftee): https://www.shiftee.io / 휴가 입력·연장근무 신청 시 사용.
 
 5. 사무위임전결규정 (결재선)
 휴가/경조사 신청:
@@ -543,7 +545,7 @@ st.markdown("""
 # 4. 사이드바
 # ──────────────────────────────────────────
 with st.sidebar:
-    # 배경 이미지 영역만큼 스페이서 (로고 이미지가 배경에 표시됨)
+    # 배경 이미지 영역 스페이서
     st.markdown("<div style='height: 155px;'></div>", unsafe_allow_html=True)
     st.markdown("<hr>", unsafe_allow_html=True)
 
@@ -570,47 +572,15 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
 
-    # 명함 신청
-    st.markdown("""
-        <div class="sidebar-card">
-            <h4>🪪 명함 신청</h4>
-            <p>사이트에 접속해서 신청하세요</p>
-            <a class="sidebar-link" href="http://mirae-n.onehp.co.kr" target="_blank">
-                🔗 명함 신청 바로가기
-            </a>
-            <p style="margin-top:8px;">ID: <span class="value">miraen</span> &nbsp;|&nbsp; PW: <span class="value">1111</span></p>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # 그룹웨어 바로가기
-    st.markdown("""
-        <div class="sidebar-card">
-            <h4>🖥️ 그룹웨어</h4>
-            <a class="sidebar-link" href="https://gw.mirae-n.com" target="_blank">
-                🔗 그룹웨어 접속
-            </a>
-            <p style="margin-top:8px; font-size:0.75rem; color:rgba(255,255,255,0.6) !important;">
-                경조사 신고서 · 휴가신청 · 전자결재
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # 시프티 바로가기
-    st.markdown("""
-        <div class="sidebar-card">
-            <h4>📅 근태 관리 (Shiftee)</h4>
-            <a class="sidebar-link" href="https://www.shiftee.io" target="_blank">
-                🔗 시프티 접속
-            </a>
-            <p style="margin-top:8px; font-size:0.75rem; color:rgba(255,255,255,0.6) !important;">
-                휴가 입력 · 연장근무 신청
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-
     st.markdown("<hr>", unsafe_allow_html=True)
+
+    # 대화 초기화 버튼 (사이드바 이동)
+    if st.button("🗑️ 대화 초기화", use_container_width=True, key="clear_btn_sidebar"):
+        st.session_state.messages = []
+        st.rerun()
+
     st.markdown("""
-        <div style="text-align:center; font-size:0.72rem; color:rgba(255,255,255,0.45); padding: 4px 0;">
+        <div style="text-align:center; font-size:0.72rem; color:rgba(255,255,255,0.45); padding: 12px 0 4px;">
             문의: 인사지원팀<br>
             © 2025 MiraeN Co., Ltd.
         </div>
@@ -1091,7 +1061,7 @@ def get_mock_response(messages_history: list) -> str:
         )
 
     # ── 22. WIFI ────────────────────────────────────────────────────────────
-    if any(k in q for k in ("wifi", "와이파이", "wi-fi", "와이파이")):
+    if any(k in q for k in ("wifi", "와이파이", "wi-fi")):
         time.sleep(0.4)
         return wrap(
             "📶 **WIFI 정보** 알려드릴게요!\n\n"
@@ -1108,7 +1078,33 @@ def get_mock_response(messages_history: list) -> str:
             "1. 사이트 접속: **mirae-n.onehp.co.kr**\n"
             "2. ID: **`miraen`** / PW: **`1111`** 로 로그인\n"
             "3. 신청서 작성 후 제출!\n\n"
-            "💡 사이드바의 '명함 신청 바로가기' 버튼을 클릭하면 바로 이동할 수 있어요! 😄"
+            "📌 위 주소를 브라우저에 직접 입력하거나 복사해서 접속하세요 😊"
+        )
+
+    # ── 23-1. 그룹웨어 ──────────────────────────────────────────────────────
+    if any(k in q for k in ("그룹웨어", "groupware", "전자결재", "경조사 신고서")):
+        time.sleep(0.4)
+        return wrap(
+            "🖥️ **그룹웨어** 안내예요!\n\n"
+            "- 주소: **gw.mirae-n.com**\n\n"
+            "**주요 메뉴**\n"
+            "- 📝 경조사 신고서\n"
+            "- 🏖️ 휴가 신청\n"
+            "- ✅ 전자결재\n\n"
+            "📌 사내 네트워크(또는 VPN) 연결 상태에서 접속하세요!"
+        )
+
+    # ── 23-2. 시프티 / 근태 ─────────────────────────────────────────────────
+    if any(k in q for k in ("시프티", "shiftee", "근태", "연장근무", "근무 신청")):
+        time.sleep(0.4)
+        return wrap(
+            "📅 **근태 관리 시스템 (Shiftee)** 안내예요!\n\n"
+            "- 주소: **shiftee.io**\n\n"
+            "**주요 용도**\n"
+            "- 🏖️ 휴가 입력\n"
+            "- ⏰ 연장근무 신청\n"
+            "- 📋 경조 휴가 입력 시 **증빙 서류 첨부 필수!**\n\n"
+            "📌 앱 다운로드 후 사번으로 로그인하면 돼요 😊"
         )
 
     # ── 24. 문서보안 ────────────────────────────────────────────────────────
@@ -1242,37 +1238,3 @@ def handle_send(question: str):
 # 전송 버튼으로 메시지 전송
 if send_clicked and user_input:
     handle_send(user_input)
-
-# ──────────────────────────────────────────
-# 10. 대화 초기화 버튼
-# ──────────────────────────────────────────
-if st.session_state.messages:
-    st.markdown("<br>", unsafe_allow_html=True)
-    col_clear = st.columns([4, 1])[1]
-    with col_clear:
-        if st.button("🗑️ 대화 초기화", use_container_width=True, key="clear_btn"):
-            st.session_state.messages = []
-            st.rerun()
-
-    # JS로 버튼 텍스트 기준 딥 레드 직접 주입
-    st.markdown("""
-        <script>
-        (function() {
-            function paintClearBtn() {
-                const btns = window.parent.document.querySelectorAll('button');
-                btns.forEach(btn => {
-                    if (btn.innerText.includes('대화 초기화')) {
-                        btn.style.setProperty('background', '#D32F2F', 'important');
-                        btn.style.setProperty('color', '#FFFFFF', 'important');
-                        btn.style.setProperty('box-shadow', '0 3px 12px rgba(211,47,47,0.35)', 'important');
-                        btn.onmouseover = () => btn.style.setProperty('background', '#B71C1C', 'important');
-                        btn.onmouseout  = () => btn.style.setProperty('background', '#D32F2F', 'important');
-                    }
-                });
-            }
-            paintClearBtn();
-            setTimeout(paintClearBtn, 300);
-            setTimeout(paintClearBtn, 800);
-        })();
-        </script>
-    """, unsafe_allow_html=True)
