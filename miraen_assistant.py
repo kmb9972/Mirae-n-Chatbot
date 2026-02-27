@@ -537,7 +537,11 @@ st.markdown("""
         }
     }
 
-    /* ── Streamlit 기본 UI 완전 제거 ────────────────────── */
+    /* ── 모바일 전용 초기화 버튼 ────────────────────────── */
+    .mobile-clear-btn { display: none; }
+    @media (max-width: 768px) {
+        .mobile-clear-btn { display: block !important; margin-top: 8px; }
+    }
     #MainMenu, footer, header { visibility: hidden; height: 0 !important; }
 
     /* 툴바(Deploy 버튼 등) 숨김 */
@@ -677,6 +681,14 @@ with col_input:
 
 with col_btn:
     send_clicked = st.button("전송 ✈️", use_container_width=True, type="primary")
+
+# 모바일 전용 대화 초기화 버튼 (사이드바가 숨겨지는 768px 이하에서만 노출)
+if st.session_state.get("messages"):
+    st.markdown('<div class="mobile-clear-btn">', unsafe_allow_html=True)
+    if st.button("🗑️ 대화 초기화", use_container_width=True, key="clear_btn_mobile"):
+        st.session_state.messages = []
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ──────────────────────────────────────────
 # 9. 응답 함수
