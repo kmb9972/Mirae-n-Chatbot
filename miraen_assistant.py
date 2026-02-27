@@ -601,4 +601,5 @@ if st.session_state.messages:
     with col_clear:
         if st.button("🗑️ 대화 초기화", use_container_width=True):
             st.session_state.messages = []
+
             st.rerun()
