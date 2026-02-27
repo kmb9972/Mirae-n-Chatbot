@@ -418,6 +418,13 @@ st.markdown("""
         transform: translateY(0) !important;
     }
 
+    /* 초기화 버튼 컬럼 식별용 */
+    [data-testid="stButton"]:has(button[kind="secondary"]) button,
+    button[data-testid="baseButton-secondary"] {
+        background: #D32F2F !important;
+        color: #FFFFFF !important;
+    }
+
     /* ── 구분선 ──────────────────────────────────────────── */
     hr { border-color: rgba(255, 255, 255, 0.15) !important; }
 
@@ -1275,7 +1282,7 @@ if st.session_state.messages:
     col_clear = st.columns([4, 1])[1]
     with col_clear:
         st.markdown('<div class="clear-btn">', unsafe_allow_html=True)
-        if st.button("🗑️ 대화 초기화", use_container_width=True):
+        if st.button("🗑️ 대화 초기화", use_container_width=True, type="secondary", key="clear_btn"):
             st.session_state.messages = []
             st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
