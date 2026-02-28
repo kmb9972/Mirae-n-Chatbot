@@ -686,18 +686,8 @@ if only_welcome:
         btn_welfare = st.button("🎁 복지제도", use_container_width=True, key="cat_welfare")
     with cat_col3:
         btn_guide = st.button("📑 기타", use_container_width=True, key="cat_guide")
-
-    for _keyword, _clicked in [
-        ("인사제도 알려줘", btn_hr),
-        ("복지제도 알려줘", btn_welfare),
-        ("일반안내 알려줘", btn_guide),
-    ]:
-        if _clicked:
-            st.session_state.messages.append({"role": "user", "content": _keyword})
-            with st.spinner("MAMA가 정리 중이에요... 📚"):
-                answer = get_ai_response(st.session_state.messages)
-            st.session_state.messages.append({"role": "assistant", "content": answer})
-            st.rerun()
+else:
+    btn_hr = btn_welfare = btn_guide = False
 
 # ──────────────────────────────────────────
 # 7. 채팅 메시지 렌더링
@@ -1529,3 +1519,12 @@ def handle_send(question: str):
 # 전송 버튼으로 메시지 전송
 if send_clicked and user_input:
     handle_send(user_input)
+
+# 카테고리 버튼 클릭 처리 (get_ai_response 정의 이후에 실행)
+for _keyword, _clicked in [
+    ("인사제도 알려줘", btn_hr),
+    ("복지제도 알려줘", btn_welfare),
+    ("일반안내 알려줘", btn_guide),
+]:
+    if _clicked:
+        handle_send(_keyword)
