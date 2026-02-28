@@ -656,44 +656,48 @@ if "messages" not in st.session_state:
     ]
 
 # ──────────────────────────────────────────
-# 6. 카테고리 요약 버튼
+# 6. 카테고리 요약 버튼 (웰컴 상태에서만 표시)
 # ──────────────────────────────────────────
-st.markdown("""
-    <style>
-    [data-testid="stButton"][id*="cat_"] button {
-        border-radius: 20px !important;
-        font-size: 0.88rem !important;
-        font-weight: 600 !important;
-        background: rgba(26,83,160,0.07) !important;
-        color: #1A53A0 !important;
-        border: 1.5px solid rgba(26,83,160,0.3) !important;
-    }
-    [data-testid="stButton"][id*="cat_"] button:hover {
-        background: rgba(26,83,160,0.18) !important;
-        border-color: #1A53A0 !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
+# 메시지가 웰컴 메시지(MAMA 1개)만 있을 때만 버튼 표시
+only_welcome = len(st.session_state.messages) == 1 and st.session_state.messages[0]["role"] == "assistant"
 
-cat_col1, cat_col2, cat_col3 = st.columns(3)
-with cat_col1:
-    btn_hr = st.button("🎖️ 인사제도", use_container_width=True, key="cat_hr")
-with cat_col2:
-    btn_welfare = st.button("🎁 복지제도", use_container_width=True, key="cat_welfare")
-with cat_col3:
-    btn_guide = st.button("📑 일반안내", use_container_width=True, key="cat_guide")
+if only_welcome:
+    st.markdown("""
+        <style>
+        [data-testid="stButton"][id*="cat_"] button {
+            border-radius: 20px !important;
+            font-size: 0.88rem !important;
+            font-weight: 600 !important;
+            background: rgba(26,83,160,0.07) !important;
+            color: #1A53A0 !important;
+            border: 1.5px solid rgba(26,83,160,0.3) !important;
+        }
+        [data-testid="stButton"][id*="cat_"] button:hover {
+            background: rgba(26,83,160,0.18) !important;
+            border-color: #1A53A0 !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
-for _label, _clicked, _keyword in [
-    ("인사제도 알려줘", btn_hr,      "인사제도 알려줘"),
-    ("복지제도 알려줘", btn_welfare,  "복지제도 알려줘"),
-    ("일반안내 알려줘", btn_guide,    "일반안내 알려줘"),
-]:
-    if _clicked:
-        st.session_state.messages.append({"role": "user", "content": _keyword})
-        with st.spinner("MAMA가 정리 중이에요... 📚"):
-            answer = get_ai_response(st.session_state.messages)
-        st.session_state.messages.append({"role": "assistant", "content": answer})
-        st.rerun()
+    cat_col1, cat_col2, cat_col3 = st.columns(3)
+    with cat_col1:
+        btn_hr = st.button("🎖️ 인사제도", use_container_width=True, key="cat_hr")
+    with cat_col2:
+        btn_welfare = st.button("🎁 복지제도", use_container_width=True, key="cat_welfare")
+    with cat_col3:
+        btn_guide = st.button("📑 기타", use_container_width=True, key="cat_guide")
+
+    for _keyword, _clicked in [
+        ("인사제도 알려줘", btn_hr),
+        ("복지제도 알려줘", btn_welfare),
+        ("일반안내 알려줘", btn_guide),
+    ]:
+        if _clicked:
+            st.session_state.messages.append({"role": "user", "content": _keyword})
+            with st.spinner("MAMA가 정리 중이에요... 📚"):
+                answer = get_ai_response(st.session_state.messages)
+            st.session_state.messages.append({"role": "assistant", "content": answer})
+            st.rerun()
 
 # ──────────────────────────────────────────
 # 7. 채팅 메시지 렌더링
