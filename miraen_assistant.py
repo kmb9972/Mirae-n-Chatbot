@@ -628,14 +628,11 @@ with st.sidebar:
 # ──────────────────────────────────────────
 # 5. 메인 화면 (배너 + 채팅)
 # ──────────────────────────────────────────
-st.markdown("""
-    <div style="margin: 0; padding: 0; line-height: 0;">
-        <img src="https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/WEB%20BANNER.png?raw=true"
-             alt="MAMA 배너"
-             style="width:100%; height:auto; display:block; margin:0; padding:0;">
-    </div>
-    <div style="margin-bottom: 20px;"></div>
-""", unsafe_allow_html=True)
+st.image(
+    "https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/WEB%20BANNER.png?raw=true",
+    use_container_width=True
+)
+st.markdown("<div style='margin-bottom:20px;'></div>", unsafe_allow_html=True)
 
 # 세션 상태 초기화 + MAMA 첫 인삿말 자동 주입
 if "messages" not in st.session_state:
@@ -643,11 +640,14 @@ if "messages" not in st.session_state:
         {
             "role": "assistant",
             "content": (
-                "안녕하세요! 미래엔 임직원 여러분 반갑습니다! 🎉 ✨\n\n"
-                "저는 미래엔 전 직원을 위한 AI 어시스턴트, **MAMA**예요!\n\n"
-                "인사, 복지, 사내 규정 등 궁금한 것이 있으시면 편하게 물어보세요! 🤝\n\n"
-                "여러분의 업무를 더 편리하게 만들어 드리기 위해 열심히 도와드릴게요. 🛠️\n\n"
-                "무엇을 도와드릴까요? 🚀"
+                "우와! 드디어 우리 미래엔 공채 14기가 한자리에 모였네요!\n\n"
+                "동기 여러분, 입사를 진심으로 축하합니다! 🎉 ✨\n\n"
+                "저도 여러분과 함께 오늘 첫발을 내디딘 14기 동기, **MAMA**라고 해요!\n\n"
+                "사실 저도 회사 규정이 낯설어서 열심히 배우고 있는 테스트 버전 동기랍니다. 🛠️\n\n"
+                "모르는 것 투성이라 막막할 땐 눈치 보지 말고 저에게 물어보세요!\n\n"
+                "제가 밤새 공부해서 마스터한 인사, 복지, 사내 규정 싹 다 공유해 드릴게요. 🤝\n\n"
+                "우리 동기들, 같이 성장해서 미래엔 적응기 멋지게 성공해 봐요!\n\n"
+                "무엇부터 알려드릴까요? 🚀"
             )
         }
     ]
