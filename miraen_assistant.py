@@ -9,6 +9,7 @@
 import streamlit as st
 import time
 import re
+import os
 from datetime import datetime
 
 # 현재 연도 (건강검진 등 연도 기반 안내에 활용)
@@ -848,24 +849,35 @@ with col_btn:
 # 9. 응답 함수
 # ──────────────────────────────────────────
 
-# ── [주석 처리됨] 실제 Anthropic API 호출 함수 ──────────────────────────────
-# def get_ai_response(messages_history: list) -> str:
-#     """Anthropic API 호출 (실제 운영 시 사용)"""
-#     client = anthropic.Anthropic()  # ANTHROPIC_API_KEY 환경변수 자동 참조
-#
-#     api_messages = [
-#         {"role": m["role"], "content": m["content"]}
-#         for m in messages_history
-#     ]
-#
-#     response = client.messages.create(
-#         model="claude-sonnet-4-6",
-#         max_tokens=1500,
-#         system=SYSTEM_PROMPT,
-#         messages=api_messages,
-#     )
-#     return response.content[0].text
-# ── [주석 처리 끝] ────────────────────────────────────────────────────────────
+# ── [Gemini API] 실제 AI 응답 함수 ─────────────────────────────────────────
+def get_gemini_response(messages_history: list) -> str:
+    """Google Gemini API 호출"""
+    try:
+        import google.generativeai as genai
+
+        api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY")
+        if not api_key:
+            return "⚠️ GEMINI_API_KEY가 설정되지 않았어요. Streamlit Secrets에 키를 등록해 주세요."
+
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash",
+            system_instruction=SYSTEM_PROMPT,
+        )
+
+        # 대화 히스토리 구성 (마지막 사용자 질문 제외)
+        history = []
+        for m in messages_history[:-1]:
+            role = "user" if m["role"] == "user" else "model"
+            history.append({"role": role, "parts": [m["content"]]})
+
+        chat = model.start_chat(history=history)
+        response = chat.send_message(messages_history[-1]["content"])
+        return response.text.strip()
+
+    except Exception as e:
+        return f"⚠️ AI 응답 중 오류가 발생했어요: {str(e)}\n\n인사지원팀에 문의해 주세요."
+# ── [Gemini API 끝] ────────────────────────────────────────────────────────
 
 
 # ── [Mock 모드] 키워드 기반 가짜 응답 함수 ──────────────────────────────────
@@ -1578,9 +1590,8 @@ def get_mock_response(messages_history: list) -> str:
 # ── [Mock 모드 끝] ────────────────────────────────────────────────────────────
 
 
-# 실제 운영 시 아래 함수명을 get_ai_response로 변경하고
-# 위 주석을 해제하면 바로 API 모드로 전환됩니다.
-get_ai_response = get_mock_response
+# Gemini AI 응답 함수로 연결
+get_ai_response = get_gemini_response
 
 
 def handle_send(question: str):
@@ -1597,7 +1608,7 @@ def handle_send(question: str):
         try:
             answer = get_ai_response(st.session_state.messages)
         except Exception as e:
-            answer = f"⚠️ Mock 응답 중 오류가 발생했습니다: {str(e)}"
+            answer = f"⚠️ 응답 중 오류가 발생했습니다: {str(e)}"
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
     st.rerun()
