@@ -533,32 +533,6 @@ st.markdown("""
         box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
         outline: none !important;
     }
-    /* st.form 테두리 완전 제거 */
-    .stForm {
-        border: none !important;
-        padding: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-    [data-testid="stForm"] {
-        border: none !important;
-        padding: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-    .stForm .stTextInput > div > div > input:focus,
-    .stForm .stTextInput > div[data-focused="true"] > div,
-    .stTextInput > div > div > input:focus-visible {
-        border-color: var(--ci-blue) !important;
-        box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
-        outline: none !important;
-    }
-    /* Streamlit 기본 빨간 포커스 완전 제거 */
-    *:focus { outline: none !important; }
-    input:focus, textarea:focus {
-        outline: none !important;
-        box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
-    }
 
     /* ── 버튼 공통 (블루) ────────────────────────────────── */
     .stButton > button,
@@ -862,18 +836,17 @@ with chat_area:
 # 8. 입력창 + 전송
 # ──────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
-col_input, col_btn = st.columns([5, 1])
 
-with col_input:
-    user_input = st.text_input(
-        label="질문 입력",
-        placeholder="예시) 사이버 연수원 미수료하면 어떻게 돼? 💻",
-        label_visibility="collapsed",
-        key="user_input"
-    )
-
-with col_btn:
-    send_clicked = st.button("전송 ✈️", use_container_width=True, type="primary")
+with st.form(key="chat_form", clear_on_submit=True):
+    col_input, col_btn = st.columns([5, 1])
+    with col_input:
+        user_input = st.text_input(
+            label="질문 입력",
+            placeholder="예시) 사이버 연수원 미수료하면 어떻게 돼? 💻",
+            label_visibility="collapsed",
+        )
+    with col_btn:
+        send_clicked = st.form_submit_button("전송 ✈️", use_container_width=True)
 
 # ──────────────────────────────────────────
 # 9. 응답 함수
@@ -1648,7 +1621,7 @@ def handle_send(question: str):
     st.rerun()
 
 
-# 전송 버튼으로 메시지 전송
+# 전송 버튼 또는 엔터로 메시지 전송
 if send_clicked and user_input:
     handle_send(user_input)
 
