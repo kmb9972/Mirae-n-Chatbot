@@ -531,6 +531,33 @@ st.markdown("""
     .stTextInput > div > div > input:focus {
         border-color: var(--ci-blue) !important;
         box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
+        outline: none !important;
+    }
+    /* st.form 테두리 완전 제거 */
+    .stForm {
+        border: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    [data-testid="stForm"] {
+        border: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    .stForm .stTextInput > div > div > input:focus,
+    .stForm .stTextInput > div[data-focused="true"] > div,
+    .stTextInput > div > div > input:focus-visible {
+        border-color: var(--ci-blue) !important;
+        box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
+        outline: none !important;
+    }
+    /* Streamlit 기본 빨간 포커스 완전 제거 */
+    *:focus { outline: none !important; }
+    input:focus, textarea:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
     }
 
     /* ── 버튼 공통 (블루) ────────────────────────────────── */
