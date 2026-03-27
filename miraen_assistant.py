@@ -860,9 +860,20 @@ def get_gemini_response(messages_history: list) -> str:
             return "⚠️ GEMINI_API_KEY가 설정되지 않았어요. Streamlit Secrets에 키를 등록해 주세요."
 
         genai.configure(api_key=api_key)
-        # 사용 가능한 모델 목록 확인 (임시)
-        models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-        return "사용 가능한 모델 목록:\n" + "\n".join(models)
+        model = genai.GenerativeModel(
+            model_name="gemini-2.5-flash",
+            system_instruction=SYSTEM_PROMPT,
+        )
+
+        # 대화 히스토리 구성 (마지막 사용자 질문 제외)
+        history = []
+        for m in messages_history[:-1]:
+            role = "user" if m["role"] == "user" else "model"
+            history.append({"role": role, "parts": [m["content"]]})
+
+        chat = model.start_chat(history=history)
+        response = chat.send_message(messages_history[-1]["content"])
+        return response.text.strip()
 
     except Exception as e:
         return f"⚠️ AI 응답 중 오류가 발생했어요: {str(e)}\n\n인사지원팀에 문의해 주세요."
