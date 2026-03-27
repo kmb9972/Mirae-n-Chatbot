@@ -857,7 +857,11 @@ def get_gemini_response(messages_history: list) -> str:
     try:
         import google.generativeai as genai
 
-        api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY")
+        api_key = None
+        try:
+            api_key = st.secrets["GEMINI_API_KEY"]
+        except Exception:
+            api_key = os.environ.get("GEMINI_API_KEY")
         if not api_key:
             return "⚠️ GEMINI_API_KEY가 설정되지 않았어요. Streamlit Secrets에 키를 등록해 주세요."
 
