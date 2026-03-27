@@ -534,7 +534,8 @@ st.markdown("""
     }
 
     /* ── 버튼 공통 (블루) ────────────────────────────────── */
-    .stButton > button {
+    .stButton > button,
+    .stFormSubmitButton > button {
         border-radius: 24px !important;
         background: var(--ci-blue) !important;
         color: var(--ci-white) !important;
@@ -545,12 +546,14 @@ st.markdown("""
         transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
         box-shadow: 0 3px 12px var(--ci-shadow) !important;
     }
-    .stButton > button:hover {
+    .stButton > button:hover,
+    .stFormSubmitButton > button:hover {
         background: var(--ci-dark) !important;
         transform: translateY(-1px) !important;
         box-shadow: 0 5px 18px rgba(26, 83, 160, 0.30) !important;
     }
-    .stButton > button:active {
+    .stButton > button:active,
+    .stFormSubmitButton > button:active {
         transform: translateY(0) !important;
     }
 
@@ -842,7 +845,7 @@ with st.form(key="chat_form", clear_on_submit=True):
             label_visibility="collapsed",
         )
     with col_btn:
-        send_clicked = st.form_submit_button("전송 ✈️", use_container_width=True, type="primary")
+        send_clicked = st.form_submit_button("전송 ✈️", use_container_width=True)
 
 # ──────────────────────────────────────────
 # 9. 응답 함수
