@@ -839,11 +839,19 @@ with col_input:
         label="질문 입력",
         placeholder="예시) 사이버 연수원 미수료하면 어떻게 돼? 💻",
         label_visibility="collapsed",
-        key="user_input"
+        key="user_input",
+        on_change=lambda: None  # 엔터 시 페이지 리렌더링 트리거
     )
 
 with col_btn:
     send_clicked = st.button("전송 ✈️", use_container_width=True, type="primary")
+
+# 엔터 또는 전송 버튼 둘 다 처리
+enter_clicked = (
+    user_input
+    and st.session_state.get("user_input", "") != ""
+    and not send_clicked
+)
 
 # ──────────────────────────────────────────
 # 9. 응답 함수
@@ -1614,8 +1622,8 @@ def handle_send(question: str):
     st.rerun()
 
 
-# 전송 버튼으로 메시지 전송
-if send_clicked and user_input:
+# 전송 버튼 또는 엔터로 메시지 전송
+if (send_clicked or enter_clicked) and user_input:
     handle_send(user_input)
 
 # 카테고리 버튼 클릭 처리 (get_ai_response 정의 이후에 실행)
