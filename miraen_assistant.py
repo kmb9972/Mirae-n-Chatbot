@@ -862,17 +862,18 @@ with chat_area:
 # 8. 입력창 + 전송
 # ──────────────────────────────────────────
 st.markdown("<br>", unsafe_allow_html=True)
+col_input, col_btn = st.columns([5, 1])
 
-with st.form(key="chat_form", clear_on_submit=True):
-    col_input, col_btn = st.columns([5, 1])
-    with col_input:
-        user_input = st.text_input(
-            label="질문 입력",
-            placeholder="예시) 사이버 연수원 미수료하면 어떻게 돼? 💻",
-            label_visibility="collapsed",
-        )
-    with col_btn:
-        send_clicked = st.form_submit_button("전송 ✈️", use_container_width=True)
+with col_input:
+    user_input = st.text_input(
+        label="질문 입력",
+        placeholder="예시) 사이버 연수원 미수료하면 어떻게 돼? 💻",
+        label_visibility="collapsed",
+        key="user_input"
+    )
+
+with col_btn:
+    send_clicked = st.button("전송 ✈️", use_container_width=True, type="primary")
 
 # ──────────────────────────────────────────
 # 9. 응답 함수
@@ -1647,7 +1648,7 @@ def handle_send(question: str):
     st.rerun()
 
 
-# 전송 버튼 또는 엔터로 메시지 전송 (중복 방지)
+# 전송 버튼으로 메시지 전송
 if send_clicked and user_input:
     handle_send(user_input)
 
