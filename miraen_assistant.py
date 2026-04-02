@@ -399,19 +399,43 @@ st.markdown("""
         background: var(--ci-blue);   /* 이미지 로딩 전 fallback */
     }
 
-    /* ── 입력창 ──────────────────────────────────────────── */
-    .stTextInput > div > div > input {
+    /* ── 입력창 (chat_input) ─────────────────────────────── */
+    [data-testid="stChatInput"] textarea,
+    [data-testid="stChatInputTextArea"] textarea,
+    div[data-testid="stChatInput"] > div,
+    .stChatInput textarea {
         border-radius: 24px !important;
         border: 2px solid var(--ci-border) !important;
-        padding: 12px 20px !important;
-        font-size: 0.92rem !important;
         background: var(--ci-white) !important;
         color: var(--ci-text) !important;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        font-size: 0.92rem !important;
+        transition: border-color 0.2s, box-shadow 0.2s !important;
+        box-shadow: none !important;
+        outline: none !important;
     }
-    .stTextInput > div > div > input:focus {
+    [data-testid="stChatInput"] textarea:focus,
+    [data-testid="stChatInputTextArea"] textarea:focus,
+    .stChatInput textarea:focus {
         border-color: var(--ci-blue) !important;
         box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
+        outline: none !important;
+    }
+    /* Streamlit 기본 빨간 테두리 완전 제거 */
+    [data-testid="stChatInput"] *:focus,
+    [data-testid="stChatInput"] *:focus-visible,
+    [data-testid="stChatInput"] textarea:focus-visible {
+        border-color: var(--ci-blue) !important;
+        box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
+        outline: none !important;
+    }
+    /* 전송 버튼 (chat_input 내부 화살표 버튼) */
+    [data-testid="stChatInputSubmitButton"] button {
+        background: var(--ci-blue) !important;
+        border: none !important;
+        border-radius: 50% !important;
+    }
+    [data-testid="stChatInputSubmitButton"] button:hover {
+        background: var(--ci-dark) !important;
     }
 
     /* ── 버튼 공통 (블루) ────────────────────────────────── */
