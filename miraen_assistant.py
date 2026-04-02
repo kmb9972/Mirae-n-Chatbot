@@ -400,39 +400,43 @@ st.markdown("""
     }
 
     /* ── 입력창 (chat_input) ─────────────────────────────── */
-    [data-testid="stChatInput"] textarea,
-    [data-testid="stChatInputTextArea"] textarea,
-    div[data-testid="stChatInput"] > div,
-    .stChatInput textarea {
+    /* wrapper div 테두리 제거 */
+    [data-testid="stChatInput"] > div,
+    div[data-testid="stChatInput"] > div {
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        background: transparent !important;
+    }
+    /* 실제 입력 textarea에만 테두리 적용 */
+    [data-testid="stChatInput"] textarea {
         border-radius: 24px !important;
         border: 2px solid var(--ci-border) !important;
         background: var(--ci-white) !important;
         color: var(--ci-text) !important;
         font-size: 0.92rem !important;
-        transition: border-color 0.2s, box-shadow 0.2s !important;
+        transition: border-color 0.2s !important;
         box-shadow: none !important;
         outline: none !important;
     }
     [data-testid="stChatInput"] textarea:focus,
-    [data-testid="stChatInputTextArea"] textarea:focus,
-    .stChatInput textarea:focus {
-        border-color: var(--ci-blue) !important;
-        box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
-        outline: none !important;
-    }
-    /* Streamlit 기본 빨간 테두리 완전 제거 */
-    [data-testid="stChatInput"] *:focus,
-    [data-testid="stChatInput"] *:focus-visible,
     [data-testid="stChatInput"] textarea:focus-visible {
         border-color: var(--ci-blue) !important;
-        box-shadow: 0 0 0 3px rgba(26, 83, 160, 0.12) !important;
+        box-shadow: none !important;
         outline: none !important;
+    }
+    /* 모든 하위 요소 기본 outline/shadow 제거 */
+    [data-testid="stChatInput"] *:focus,
+    [data-testid="stChatInput"] *:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
     }
     /* 전송 버튼 (chat_input 내부 화살표 버튼) */
     [data-testid="stChatInputSubmitButton"] button {
         background: var(--ci-blue) !important;
         border: none !important;
         border-radius: 50% !important;
+        box-shadow: none !important;
     }
     [data-testid="stChatInputSubmitButton"] button:hover {
         background: var(--ci-dark) !important;
