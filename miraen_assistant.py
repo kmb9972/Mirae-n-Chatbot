@@ -400,23 +400,24 @@ st.markdown("""
     }
 
     /* ── 입력창 (chat_input) ─────────────────────────────── */
-    /* wrapper div 테두리 제거 + 배경 흰색 */
-    [data-testid="stChatInput"],
+    /* 최상위 wrapper: 테두리+둥근 모서리+흰 배경+overflow hidden으로 모서리 회색 차단 */
+    [data-testid="stChatInput"] {
+        border-radius: 24px !important;
+        background: var(--ci-white) !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
     [data-testid="stChatInput"] > div,
-    [data-testid="stChatInput"] > div > div,
-    div[data-testid="stChatInput"] > div {
+    [data-testid="stChatInput"] > div > div {
         border: none !important;
         box-shadow: none !important;
         outline: none !important;
         background: var(--ci-white) !important;
         border-radius: 24px !important;
+        overflow: hidden !important;
     }
-    /* textarea 모서리 안쪽 회색 완전 제거 */
-    [data-testid="stChatInput"] textarea {
-        background-color: var(--ci-white) !important;
-        border-radius: 22px !important;
-    }
-    /* 실제 입력 textarea에만 테두리 적용 */
+    /* textarea */
     [data-testid="stChatInput"] textarea {
         border-radius: 24px !important;
         border: 2px solid var(--ci-border) !important;
