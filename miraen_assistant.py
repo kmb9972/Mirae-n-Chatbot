@@ -418,6 +418,7 @@ st.markdown("""
         transition: border-color 0.2s !important;
         box-shadow: none !important;
         outline: none !important;
+        padding: 14px 20px !important;
     }
     [data-testid="stChatInput"] textarea:focus,
     [data-testid="stChatInput"] textarea:focus-visible {
