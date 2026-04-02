@@ -406,7 +406,8 @@ st.markdown("""
         border: none !important;
         box-shadow: none !important;
         outline: none !important;
-        background: transparent !important;
+        background: var(--ci-white) !important;
+        border-radius: 24px !important;
     }
     /* 실제 입력 textarea에만 테두리 적용 */
     [data-testid="stChatInput"] textarea {
