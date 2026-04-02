@@ -400,24 +400,27 @@ st.markdown("""
     }
 
     /* ── 입력창 (chat_input) ─────────────────────────────── */
-    /* 최상위 wrapper: 테두리+둥근 모서리+흰 배경+overflow hidden으로 모서리 회색 차단 */
     [data-testid="stChatInput"] {
         border-radius: 24px !important;
         background: var(--ci-white) !important;
         overflow: hidden !important;
         box-shadow: none !important;
         border: none !important;
+        padding: 0 !important;
     }
     [data-testid="stChatInput"] > div,
-    [data-testid="stChatInput"] > div > div {
+    [data-testid="stChatInput"] > div > div,
+    [data-testid="stChatInput"] * {
         border: none !important;
         box-shadow: none !important;
         outline: none !important;
         background: var(--ci-white) !important;
-        border-radius: 24px !important;
+        border-radius: 0 !important;
         overflow: hidden !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
-    /* textarea */
+    /* textarea만 별도로 스타일링 */
     [data-testid="stChatInput"] textarea {
         border-radius: 24px !important;
         border: 2px solid var(--ci-border) !important;
@@ -428,6 +431,9 @@ st.markdown("""
         box-shadow: none !important;
         outline: none !important;
         padding: 14px 20px !important;
+        margin: 0 !important;
+        width: 100% !important;
+        display: block !important;
     }
     [data-testid="stChatInput"] textarea:focus,
     [data-testid="stChatInput"] textarea:focus-visible {
@@ -435,13 +441,12 @@ st.markdown("""
         box-shadow: none !important;
         outline: none !important;
     }
-    /* 모든 하위 요소 기본 outline/shadow 제거 */
-    [data-testid="stChatInput"] *:focus,
-    [data-testid="stChatInput"] *:focus-visible {
-        outline: none !important;
-        box-shadow: none !important;
+    /* 전송 버튼은 예외 처리 */
+    [data-testid="stChatInputSubmitButton"],
+    [data-testid="stChatInputSubmitButton"] * {
+        background: transparent !important;
+        border-radius: 50% !important;
     }
-    /* 전송 버튼 (chat_input 내부 화살표 버튼) */
     [data-testid="stChatInputSubmitButton"] button {
         background: var(--ci-blue) !important;
         border: none !important;
