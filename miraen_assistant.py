@@ -703,7 +703,8 @@ with chat_area:
                 st.markdown(f"""
                     <div class="chat-msg-assistant">
                         <img class="avatar avatar-bot"
-                        src="https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/BADUKEE_BANANAPRO2.png?raw=true"
+                             src="https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/BADUKEE_BANANAPRO2.png?raw=true"
+                             alt="MAMA">
                         <div class="bubble-assistant">{msg["content"]}</div>
                     </div>
                 """, unsafe_allow_html=True)
