@@ -1367,8 +1367,6 @@ def get_ai_response(messages_history: list) -> str:
         "MAMA를 넘어서는 고난도 질문은? 📞 언제든 **인사지원팀**의 문을 두드려 주세요!"
     )
 
-get_ai_response = get_mock_response
-
 def handle_send(question: str):
     question = question.strip()
     if not question:
