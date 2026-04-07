@@ -803,11 +803,11 @@ st.markdown("""
 
 cat_col1, cat_col2, cat_col3 = st.columns(3)
 with cat_col1:
-    btn_hr = st.button("🎖️ 인사제도", use_container_width=True, key="cat_hr")
+    btn_hr = st.button("인사제도", use_container_width=True, key="cat_hr")
 with cat_col2:
-    btn_welfare = st.button("🎁 복지제도", use_container_width=True, key="cat_welfare")
+    btn_welfare = st.button("복지제도", use_container_width=True, key="cat_welfare")
 with cat_col3:
-    btn_guide = st.button("📑 기타", use_container_width=True, key="cat_guide")
+    btn_guide = st.button("기타", use_container_width=True, key="cat_guide")
 
 # ──────────────────────────────────────────
 # 7. 채팅 메시지 렌더링
@@ -856,7 +856,7 @@ with st.form(key="chat_form", clear_on_submit=True):
             label_visibility="collapsed",
         )
     with col_btn:
-        send_clicked = st.form_submit_button("전송 ✈️", use_container_width=True)
+        send_clicked = st.form_submit_button("전송", use_container_width=True)
 
 # ──────────────────────────────────────────
 # 9. 응답 함수
