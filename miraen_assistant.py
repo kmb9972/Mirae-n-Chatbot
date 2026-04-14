@@ -8,7 +8,62 @@ import time
 from pathlib import Path
 from datetime import datetime
 
+# ── Google Sheets 로깅용 ──────────────────────────────────────────────────
+try:
+    import gspread
+    from google.oauth2.service_account import Credentials
+    _GSPREAD_AVAILABLE = True
+except ImportError:
+    _GSPREAD_AVAILABLE = False
+
 current_year = datetime.now().year
+
+# ── Google Sheets 로그 기록 함수 ─────────────────────────────────────────
+def _get_sheet():
+    if not _GSPREAD_AVAILABLE:
+        return None
+    try:
+        creds_info = dict(st.secrets["gcp_service_account"])
+        scopes = [
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive",
+        ]
+        creds = Credentials.from_service_account_info(creds_info, scopes=scopes)
+        client = gspread.authorize(creds)
+        sheet_id = st.secrets.get("SHEETS_LOG_ID", "")
+        if not sheet_id:
+            return None
+        spreadsheet = client.open_by_key(sheet_id)
+        try:
+            ws = spreadsheet.worksheet("로그")
+        except gspread.WorksheetNotFound:
+            ws = spreadsheet.add_worksheet(title="로그", rows=5000, cols=6)
+            ws.append_row(["타임스탬프", "질문", "답변", "응답시간(초)", "카테고리", "세션ID"])
+        return ws
+    except Exception as e:
+        logging.warning(f"Sheets 연결 실패 (로그 생략): {e}")
+        return None
+
+
+def log_to_sheets(question: str, answer: str, elapsed: float, category: str = "직접입력"):
+    try:
+        ws = _get_sheet()
+        if ws is None:
+            return
+        if "session_id" not in st.session_state:
+            import uuid
+            st.session_state.session_id = str(uuid.uuid4())[:8]
+        ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        ws.append_row([
+            ts,
+            question[:500],
+            answer[:1000],
+            round(elapsed, 2),
+            category,
+            st.session_state.session_id,
+        ])
+    except Exception as e:
+        logging.warning(f"Sheets 로그 기록 실패 (서비스 계속): {e}")
 
 _KB_PATH = Path(__file__).parent / "knowledge.md"
 
@@ -692,41 +747,7 @@ def get_gemini_response(messages_history: list) -> str:
 get_ai_response = get_gemini_response
 
 
-# ── Google Sheets 로그 저장 ────────────────────────────────────────────────
-def log_to_sheets(question: str, answer: str):
-    """질문과 답변을 Google Sheets에 기록"""
-    try:
-        import gspread
-        from google.oauth2.service_account import Credentials
-
-        creds_dict = dict(st.secrets["gcp_service_account"])
-        creds = Credentials.from_service_account_info(
-            creds_dict,
-            scopes=[
-                "https://www.googleapis.com/auth/spreadsheets",
-                "https://www.googleapis.com/auth/drive",
-            ],
-        )
-        gc = gspread.authorize(creds)
-        sheet_id = st.secrets["SHEETS_LOG_ID"]
-        sh = gc.open_by_key(sheet_id)
-        ws = sh.sheet1  # 첫 번째 시트에 기록
-
-        # 헤더가 없으면 자동 추가
-        if ws.row_count == 0 or ws.cell(1, 1).value != "시간":
-            ws.append_row(["시간", "질문", "답변"])
-
-        ws.append_row([
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            question,
-            answer,
-        ])
-    except Exception as e:
-        logging.error(f"Sheets 로그 오류: {e}", exc_info=True)
-        # 로그 실패해도 챗봇은 계속 동작
-
-
-def handle_send(question: str):
+def handle_send(question: str, category: str = "직접입력"):
     question = question.strip()
     if not question:
         return
@@ -765,17 +786,17 @@ def handle_send(question: str):
     st.session_state.messages.append({"role": "user", "content": question})
 
     with st.spinner("답변을 생성하고 있습니다..."):
+        t_start = time.time()
         try:
             answer = get_ai_response(st.session_state.messages)
         except Exception as e:
             logging.error(f"AI 응답 오류: {e}", exc_info=True)
             answer = "⚠️ 일시적인 오류가 발생했어요. 잠시 후 다시 시도해 주세요."
+        elapsed = time.time() - t_start
+
+    log_to_sheets(question, answer, elapsed, category)
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
-
-    # Google Sheets 로그 저장
-    log_to_sheets(question, answer)
-
     st.rerun()
 
 # 엔터로 메시지 전송 (chat_input은 입력 시 자동으로 값 반환)
@@ -783,10 +804,10 @@ if user_input:
     handle_send(user_input)
 
 # 카테고리 버튼 클릭 처리 (get_ai_response 정의 이후에 실행)
-for _keyword, _clicked in [
-    ("인사제도 알려줘", btn_hr),
-    ("복지제도 알려줘", btn_welfare),
-    ("일반안내 알려줘", btn_guide),
+for _keyword, _clicked, _category in [
+    ("인사제도 알려줘", btn_hr,      "인사제도"),
+    ("복지제도 알려줘", btn_welfare, "복지제도"),
+    ("일반안내 알려줘", btn_guide,   "일반안내"),
 ]:
     if _clicked:
-        handle_send(_keyword)
+        handle_send(_keyword, category=_category)
