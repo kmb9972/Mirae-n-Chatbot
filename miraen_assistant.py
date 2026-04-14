@@ -518,10 +518,10 @@ with st.sidebar:
             letter-spacing:0.08em;
             text-transform:uppercase;
             padding: 4px 4px 8px 4px;
-        ">🔥 자주 묻는 질문 TOP 5</div>
+        ">자주 묻는 질문 TOP 5</div>
 
         <details class="sidebar-acc">
-            <summary>💰 복지포인트 언제까지 써야 해?</summary>
+            <summary>복지포인트 언제까지 써야 해?</summary>
             <div class="sidebar-acc-body">
                 <p>온라인(베네피아) <span class="value">12월 30일</span>까지</p>
                 <p>오프라인(복지카드) <span class="value">12월 23일</span>까지</p>
@@ -530,7 +530,7 @@ with st.sidebar:
         </details>
 
         <details class="sidebar-acc">
-            <summary>🏠 재택근무 며칠이야?</summary>
+            <summary>재택근무 며칠이야?</summary>
             <div class="sidebar-acc-body">
                 <p>기본 주 <span class="value">2회</span></p>
                 <p>공휴일 1일 포함 주 → <span class="value">1회</span></p>
@@ -539,7 +539,7 @@ with st.sidebar:
         </details>
 
         <details class="sidebar-acc">
-            <summary>💐 경조사 지원 얼마야?</summary>
+            <summary>경조사 지원 얼마야?</summary>
             <div class="sidebar-acc-body">
                 <p>결혼 <span class="value">30만원 / 7일</span></p>
                 <p>출산 <span class="value">500만원 / 20일</span></p>
@@ -548,7 +548,7 @@ with st.sidebar:
         </details>
 
         <details class="sidebar-acc">
-            <summary>📅 연차 어떻게 써?</summary>
+            <summary>연차 어떻게 써?</summary>
             <div class="sidebar-acc-body">
                 <p>최소 <span class="value">2시간 단위</span>로 분할 사용 가능</p>
                 <p>플러스 휴가(연 4일)를 먼저 쓰는 걸 권장해요!</p>
@@ -557,7 +557,7 @@ with st.sidebar:
         </details>
 
         <details class="sidebar-acc">
-            <summary>💻 사이버 연수원 미수료하면?</summary>
+            <summary>사이버 연수원 미수료하면?</summary>
             <div class="sidebar-acc-body">
                 <p>향후 <span class="value">6개월간</span> 수강 신청 제한!</p>
                 <p style="margin-top:6px;">매월 중순 전사게시판에서 신청, 익월 수강이에요.</p>
