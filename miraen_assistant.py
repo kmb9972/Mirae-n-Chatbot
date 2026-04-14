@@ -640,7 +640,6 @@ with chat_area:
                 st.markdown(f"""
                     <div class="chat-msg-user">
                         <div class="bubble-user">{safe_content}</div>
-                        <div class="avatar avatar-user">🙋</div>
                     </div>
                 """, unsafe_allow_html=True)
             else:
