@@ -600,28 +600,75 @@ if "messages" not in st.session_state:
 
 st.markdown("""
     <style>
-    [data-testid="stButton"][id*="cat_"] button {
-        border-radius: 20px !important;
-        font-size: 0.88rem !important;
-        font-weight: 600 !important;
-        background: rgba(26,83,160,0.07) !important;
-        color: #1A53A0 !important;
-        border: 1.5px solid rgba(26,83,160,0.3) !important;
+    /* 카테고리 그리드 */
+    .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 16px;
     }
-    [data-testid="stButton"][id*="cat_"] button:hover {
-        background: rgba(26,83,160,0.18) !important;
-        border-color: #1A53A0 !important;
+    .cat-grid-btn {
+        padding: 10px 6px;
+        border-radius: 12px;
+        border: 1.5px solid rgba(26,83,160,0.25);
+        background: rgba(26,83,160,0.05);
+        color: #1A53A0;
+        font-size: 0.78rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        text-align: center;
+        line-height: 1.4;
+        transition: all 0.18s;
+        width: 100%;
+    }
+    .cat-grid-btn:hover {
+        background: rgba(26,83,160,0.15);
+        border-color: #1A53A0;
     }
     </style>
 """, unsafe_allow_html=True)
 
-cat_col1, cat_col2, cat_col3 = st.columns(3)
-with cat_col1:
-    btn_hr = st.button("인사제도", use_container_width=True, key="cat_hr")
-with cat_col2:
-    btn_welfare = st.button("복지제도", use_container_width=True, key="cat_welfare")
-with cat_col3:
-    btn_guide = st.button("기타", use_container_width=True, key="cat_guide")
+# 카테고리 정의 (이름 + 되묻기 메시지)
+CATEGORIES = {
+    "신규 입사 가이드":  {
+        "key": "cat_new",
+        "prompt": "신규 입사 가이드 카테고리군요! 해당 항목에서 어떤 내용이 궁금하신가요?\n\n예시 키워드: `사원증 발급` · `그룹웨어 접속` · `명함 신청` · `사내 메신저` · `법인카드 발급`",
+    },
+    "근태 및 재택": {
+        "key": "cat_attendance",
+        "prompt": "근태 및 재택 카테고리군요! 해당 항목에서 어떤 내용이 궁금하신가요?\n\n예시 키워드: `재택근무 횟수` · `자율출근제` · `시프티 사용법` · `연장근무 신청` · `출장 결재선`",
+    },
+    "휴가 및 경조사": {
+        "key": "cat_leave",
+        "prompt": "휴가 및 경조사 카테고리군요! 해당 항목에서 어떤 내용이 궁금하신가요?\n\n예시 키워드: `연차 사용` · `플러스 휴가` · `경조사 지원금` · `출산 휴가` · `장기근속 휴가`",
+    },
+    "자기계발 지원": {
+        "key": "cat_growth",
+        "prompt": "자기계발 지원 카테고리군요! 해당 항목에서 어떤 내용이 궁금하신가요?\n\n예시 키워드: `사이버 연수원` · `사외교육 지원` · `자격증 지원` · `학자금 지원` · `워케이션`",
+    },
+    "오피스 서비스": {
+        "key": "cat_office",
+        "prompt": "오피스 서비스 카테고리군요! 해당 항목에서 어떤 내용이 궁금하신가요?\n\n예시 키워드: `복합기 연결` · `회의실 예약` · `퀵서비스` · `업무차량` · `문서보안`",
+    },
+    "조직문화 및 호칭": {
+        "key": "cat_culture",
+        "prompt": "조직문화 및 호칭 카테고리군요! 해당 항목에서 어떤 내용이 궁금하신가요?\n\n예시 키워드: `호칭 체계` · `성과 평가` · `역량 평가` · `OKR` · `복지포인트`",
+    },
+}
+
+# 카테고리 버튼 렌더링 (그리드)
+cat_names = list(CATEGORIES.keys())
+cat_clicked = {}
+
+cols = st.columns(3)
+for i, name in enumerate(cat_names):
+    with cols[i % 3]:
+        cat_clicked[name] = st.button(
+            name,
+            use_container_width=True,
+            key=CATEGORIES[name]["key"]
+        )
 
 chat_area = st.container()
 
@@ -806,15 +853,20 @@ def handle_send(question: str):
 
     st.rerun()
 
-# 엔터로 메시지 전송 (chat_input은 입력 시 자동으로 값 반환)
+# 엔터로 메시지 전송
 if user_input:
     handle_send(user_input)
 
-# 카테고리 버튼 클릭 처리 (get_ai_response 정의 이후에 실행)
-for _keyword, _clicked in [
-    ("인사제도 알려줘", btn_hr),
-    ("복지제도 알려줘", btn_welfare),
-    ("일반안내 알려줘", btn_guide),
-]:
-    if _clicked:
-        handle_send(_keyword)
+# 카테고리 버튼 클릭 처리 → 되묻기 방식
+def handle_category(name: str):
+    """카테고리 클릭 시 바로 답변하지 않고 되묻기"""
+    prompt = CATEGORIES[name]["prompt"]
+    # 사용자가 카테고리 버튼을 누른 것을 메시지로 추가
+    st.session_state.messages.append({"role": "user", "content": name})
+    # MAMA가 되묻기 메시지 출력 (Gemini 호출 없이 바로)
+    st.session_state.messages.append({"role": "assistant", "content": prompt})
+    st.rerun()
+
+for name, clicked in cat_clicked.items():
+    if clicked:
+        handle_category(name)
