@@ -692,6 +692,40 @@ def get_gemini_response(messages_history: list) -> str:
 get_ai_response = get_gemini_response
 
 
+# ── Google Sheets 로그 저장 ────────────────────────────────────────────────
+def log_to_sheets(question: str, answer: str):
+    """질문과 답변을 Google Sheets에 기록"""
+    try:
+        import gspread
+        from google.oauth2.service_account import Credentials
+
+        creds_dict = dict(st.secrets["gcp_service_account"])
+        creds = Credentials.from_service_account_info(
+            creds_dict,
+            scopes=[
+                "https://www.googleapis.com/auth/spreadsheets",
+                "https://www.googleapis.com/auth/drive",
+            ],
+        )
+        gc = gspread.authorize(creds)
+        sheet_id = st.secrets["SHEETS_LOG_ID"]
+        sh = gc.open_by_key(sheet_id)
+        ws = sh.sheet1  # 첫 번째 시트에 기록
+
+        # 헤더가 없으면 자동 추가
+        if ws.row_count == 0 or ws.cell(1, 1).value != "시간":
+            ws.append_row(["시간", "질문", "답변"])
+
+        ws.append_row([
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            question,
+            answer,
+        ])
+    except Exception as e:
+        logging.error(f"Sheets 로그 오류: {e}", exc_info=True)
+        # 로그 실패해도 챗봇은 계속 동작
+
+
 def handle_send(question: str):
     question = question.strip()
     if not question:
@@ -738,6 +772,10 @@ def handle_send(question: str):
             answer = "⚠️ 일시적인 오류가 발생했어요. 잠시 후 다시 시도해 주세요."
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
+
+    # Google Sheets 로그 저장
+    log_to_sheets(question, answer)
+
     st.rerun()
 
 # 엔터로 메시지 전송 (chat_input은 입력 시 자동으로 값 반환)
