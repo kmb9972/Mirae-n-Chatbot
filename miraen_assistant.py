@@ -129,6 +129,53 @@ st.markdown("""
         font-weight: 700;
         font-size: 0.9rem;
     }
+    /* ── 사이드바 아코디언 (details/summary) ── */
+    .sidebar-acc {
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.20);
+        border-radius: 12px;
+        margin-bottom: 10px;
+        backdrop-filter: blur(6px);
+        overflow: hidden;
+    }
+    .sidebar-acc summary {
+        padding: 12px 16px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #A8CCEE !important;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        user-select: none;
+    }
+    .sidebar-acc summary::-webkit-details-marker { display: none; }
+    .sidebar-acc summary::after {
+        content: '▾';
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.5);
+        transition: transform 0.2s;
+    }
+    .sidebar-acc[open] summary::after { transform: rotate(180deg); }
+    .sidebar-acc[open] summary {
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    .sidebar-acc-body {
+        padding: 10px 16px 12px;
+    }
+    .sidebar-acc-body p {
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.75) !important;
+        margin: 4px 0;
+        line-height: 1.5;
+    }
+    .sidebar-acc-body .value {
+        color: var(--ci-white) !important;
+        font-weight: 700;
+        font-size: 0.88rem;
+    }
     .sidebar-link {
         display: inline-block;
         background: rgba(255, 255, 255, 0.15);
@@ -465,24 +512,28 @@ with st.sidebar:
     st.markdown("<hr>", unsafe_allow_html=True)
 
     st.markdown("""
-        <div class="sidebar-card">
-            <h4>📶 WIFI 정보</h4>
-            <p class="value">직원용</p>
-            <p>MiraeN-AP</p>
-            <p style="color:rgba(255,255,255,0.6) !important; font-size:0.75rem;">PW: 19480924ab</p>
-            <p style="margin-top:10px;" class="value">외부 방문객용</p>
-            <p>MiraeN-WIfI</p>
-            <p style="color:rgba(255,255,255,0.6) !important; font-size:0.75rem;">PW: 34753800</p>
-        </div>
+        <details class="sidebar-acc">
+            <summary>📶 WIFI 정보</summary>
+            <div class="sidebar-acc-body">
+                <p class="value">직원용</p>
+                <p>MiraeN-AP</p>
+                <p style="color:rgba(255,255,255,0.6) !important; font-size:0.75rem;">PW: 19480924ab</p>
+                <p style="margin-top:8px;" class="value">외부 방문객용</p>
+                <p>MiraeN-WIfI</p>
+                <p style="color:rgba(255,255,255,0.6) !important; font-size:0.75rem;">PW: 34753800</p>
+            </div>
+        </details>
     """, unsafe_allow_html=True)
 
     st.markdown("""
-        <div class="sidebar-card">
-            <h4>🔒 문서보안 설정</h4>
-            <p><span class="value">서버</span>: doc.mirae-n.com</p>
-            <p><span class="value">포트</span>: 443</p>
-            <p><span class="value">계정</span>: 사번</p>
-        </div>
+        <details class="sidebar-acc">
+            <summary>🔒 문서보안 설정</summary>
+            <div class="sidebar-acc-body">
+                <p><span class="value">서버</span>: doc.mirae-n.com</p>
+                <p><span class="value">포트</span>: 443</p>
+                <p><span class="value">계정</span>: 사번</p>
+            </div>
+        </details>
     """, unsafe_allow_html=True)
 
     st.markdown("<hr>", unsafe_allow_html=True)
