@@ -506,6 +506,17 @@ st.markdown("""
     .appview-container .main .block-container {
         padding-top: 0 !important;
     }
+    /* 대화 초기화 버튼 */
+    [data-testid="stSidebar"] [data-testid="stButton"] button {
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: 1.5px solid rgba(0,0,0,0.15) !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.10) !important;
+    }
+    [data-testid="stSidebar"] [data-testid="stButton"] button:hover {
+        background: #f5f5f5 !important;
+        border-color: rgba(0,0,0,0.3) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
