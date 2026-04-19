@@ -538,8 +538,8 @@ with st.sidebar:
 
     st.markdown("""
         <div style="
-            font-size:0.8rem; font-weight:800;
-            color:#3d5a1e;
+            font-size:0.88rem; font-weight:800;
+            color:#5c3317;
             letter-spacing:0.06em;
             text-transform:uppercase;
             padding: 4px 4px 8px 4px;
@@ -598,7 +598,7 @@ with st.sidebar:
         st.rerun()
 
     st.markdown(f"""
-        <div style="text-align:center; font-size:0.72rem; color:rgba(26,83,160,0.6); padding: 12px 0 4px;">
+        <div style="text-align:center; font-size:0.72rem; color:#5c3317; padding: 12px 0 4px; font-weight:600; text-shadow: 0 1px 2px rgba(255,255,255,0.6);">
             문의: 인사지원팀<br>
             © {current_year} MiraeN Co., Ltd.<br>
             제작: 강민범 선임
