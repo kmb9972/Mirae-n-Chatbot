@@ -507,6 +507,18 @@ st.markdown("""
         padding-top: 0 !important;
     }
     /* 대화 초기화 버튼 - 버튼 바로 위 markdown에서 처리 */
+    [data-testid="stSidebar"] .stButton button {
+        background: #ffffff !important;
+        color: #111111 !important;
+        border: 1.5px solid #cccccc !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+    }
+    [data-testid="stSidebar"] .stButton button:hover {
+        background: #f0f0f0 !important;
+        color: #111111 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -570,21 +582,9 @@ with st.sidebar:
 
     st.markdown("<hr>", unsafe_allow_html=True)
 
-    st.markdown("""
-        <style>
-        div[data-testid="stSidebar"] button[key="clear_btn_sidebar"] {
-            background: #ffffff !important;
-            color: #111111 !important;
-            border: 1.5px solid #cccccc !important;
-            border-radius: 12px !important;
-            font-weight: 700 !important;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
-        }
-        div[data-testid="stSidebar"] button[key="clear_btn_sidebar"]:hover {
-            background: #f0f0f0 !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    if st.sidebar.button("대화 초기화", use_container_width=True, key="clear_btn_sidebar"):
+        st.session_state.messages = []
+        st.rerun()
 
     st.markdown(f"""
         <div style="text-align:center; font-size:0.72rem; color:rgba(26,83,160,0.6); padding: 12px 0 4px;">
