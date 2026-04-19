@@ -131,8 +131,8 @@ st.markdown("""
     }
     /* ── 사이드바 아코디언 (details/summary) ── */
     .sidebar-acc {
-        background: rgba(255,255,255,0.10);
-        border: 1px solid rgba(255,255,255,0.20);
+        background: rgba(255,255,255,0.55);
+        border: 1px solid rgba(0,0,0,0.12);
         border-radius: 12px;
         margin-bottom: 10px;
         backdrop-filter: blur(6px);
@@ -142,8 +142,8 @@ st.markdown("""
         padding: 12px 16px;
         font-size: 0.78rem;
         font-weight: 700;
-        color: #A8CCEE !important;
-        letter-spacing: 0.06em;
+        color: #1A53A0 !important;
+        letter-spacing: 0.04em;
         cursor: pointer;
         list-style: none;
         display: flex;
@@ -155,24 +155,25 @@ st.markdown("""
     .sidebar-acc summary::after {
         content: '▾';
         font-size: 0.85rem;
-        color: rgba(255,255,255,0.5);
+        color: rgba(26,83,160,0.6);
         transition: transform 0.2s;
     }
     .sidebar-acc[open] summary::after { transform: rotate(180deg); }
     .sidebar-acc[open] summary {
-        border-bottom: 1px solid rgba(255,255,255,0.15);
+        border-bottom: 1px solid rgba(0,0,0,0.08);
     }
     .sidebar-acc-body {
         padding: 10px 16px 12px;
+        background: rgba(255,255,255,0.4);
     }
     .sidebar-acc-body p {
         font-size: 0.82rem;
-        color: rgba(255,255,255,0.75) !important;
+        color: #2d4a6e !important;
         margin: 4px 0;
         line-height: 1.5;
     }
     .sidebar-acc-body .value {
-        color: var(--ci-white) !important;
+        color: #1A53A0 !important;
         font-weight: 700;
         font-size: 0.88rem;
     }
@@ -514,7 +515,7 @@ with st.sidebar:
     st.markdown("""
         <div style="
             font-size:0.72rem; font-weight:700;
-            color:#A8CCEE;
+            color:#1A53A0;
             letter-spacing:0.08em;
             text-transform:uppercase;
             padding: 4px 4px 8px 4px;
@@ -572,7 +573,7 @@ with st.sidebar:
         st.rerun()
 
     st.markdown(f"""
-        <div style="text-align:center; font-size:0.72rem; color:rgba(255,255,255,0.45); padding: 12px 0 4px;">
+        <div style="text-align:center; font-size:0.72rem; color:rgba(26,83,160,0.6); padding: 12px 0 4px;">
             문의: 인사지원팀<br>
             © {current_year} MiraeN Co., Ltd.<br>
             제작: 강민범 선임
