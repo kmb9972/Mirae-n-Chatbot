@@ -606,7 +606,7 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
 st.image(
-    "https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/MAIN%20BANNER.png?raw=true",
+    "https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/TOP%20BANNER.png?raw=true",
     use_container_width=True
 )
 st.markdown("<div style='margin-bottom:20px;'></div>", unsafe_allow_html=True)
