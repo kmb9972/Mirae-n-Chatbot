@@ -102,6 +102,10 @@ st.markdown("""
         [data-testid="collapsedControl"] {
             display: none !important;
         }
+        /* 모바일에서 카테고리 버튼 숨기기 */
+        [data-testid="stHorizontalBlock"] {
+            display: none !important;
+        }
     }
 
     
