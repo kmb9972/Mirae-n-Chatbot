@@ -131,8 +131,8 @@ st.markdown("""
     }
     /* ── 사이드바 아코디언 (details/summary) ── */
     .sidebar-acc {
-        background: rgba(255,255,255,0.55);
-        border: 1px solid rgba(0,0,0,0.12);
+        background: rgba(255,255,255,0.65);
+        border: 1px solid rgba(61,90,30,0.2);
         border-radius: 12px;
         margin-bottom: 10px;
         backdrop-filter: blur(6px);
@@ -142,7 +142,7 @@ st.markdown("""
         padding: 12px 16px;
         font-size: 0.78rem;
         font-weight: 700;
-        color: #1A53A0 !important;
+        color: #3d5a1e !important;
         letter-spacing: 0.04em;
         cursor: pointer;
         list-style: none;
@@ -155,12 +155,12 @@ st.markdown("""
     .sidebar-acc summary::after {
         content: '▾';
         font-size: 0.85rem;
-        color: rgba(26,83,160,0.6);
+        color: rgba(61,90,30,0.7);
         transition: transform 0.2s;
     }
     .sidebar-acc[open] summary::after { transform: rotate(180deg); }
     .sidebar-acc[open] summary {
-        border-bottom: 1px solid rgba(0,0,0,0.08);
+        border-bottom: 1px solid rgba(61,90,30,0.15);
     }
     .sidebar-acc-body {
         padding: 10px 16px 12px;
@@ -168,12 +168,12 @@ st.markdown("""
     }
     .sidebar-acc-body p {
         font-size: 0.82rem;
-        color: #2d4a6e !important;
+        color: #4a3b1e !important;
         margin: 4px 0;
         line-height: 1.5;
     }
     .sidebar-acc-body .value {
-        color: #1A53A0 !important;
+        color: #3d5a1e !important;
         font-weight: 700;
         font-size: 0.88rem;
     }
@@ -538,11 +538,12 @@ with st.sidebar:
 
     st.markdown("""
         <div style="
-            font-size:0.72rem; font-weight:700;
-            color:#1A53A0;
-            letter-spacing:0.08em;
+            font-size:0.8rem; font-weight:800;
+            color:#3d5a1e;
+            letter-spacing:0.06em;
             text-transform:uppercase;
             padding: 4px 4px 8px 4px;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.6);
         ">자주 묻는 질문 TOP 5</div>
 
         <details class="sidebar-acc">
