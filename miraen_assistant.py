@@ -238,14 +238,15 @@ st.markdown("""
 
     
     .bubble-user {
-        background: linear-gradient(135deg, #1A53A0 0%, #143F7A 100%);
-        color: var(--ci-white);
+        background: #ffffff;
+        color: #0F2A52;
         border-radius: 18px 18px 4px 18px;
         padding: 12px 18px;
         max-width: 70%;
         font-size: 0.9rem;
         line-height: 1.65;
-        box-shadow: 0 3px 14px rgba(26, 83, 160, 0.30);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        border: 1px solid #e2e8f0;
         word-break: keep-all;
         overflow-wrap: break-word;
     }
@@ -609,23 +610,28 @@ st.markdown("""
         margin-bottom: 16px;
     }
     .cat-grid-btn {
-        padding: 10px 6px;
+        padding: 0;
         border-radius: 12px;
-        border: 1.5px solid rgba(26,83,160,0.25);
-        background: rgba(26,83,160,0.05);
-        color: #1A53A0;
+        border: none;
+        background-image: url('https://github.com/kmb9972/Mirae-n-Chatbot/blob/main/category.png?raw=true');
+        background-size: cover;
+        background-position: center;
+        color: #000000;
         font-size: 0.78rem;
-        font-weight: 600;
+        font-weight: 700;
         font-family: inherit;
         cursor: pointer;
         text-align: center;
         line-height: 1.4;
         transition: all 0.18s;
         width: 100%;
+        height: 50px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.12);
     }
     .cat-grid-btn:hover {
-        background: rgba(26,83,160,0.15);
-        border-color: #1A53A0;
+        opacity: 0.85;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.18);
     }
     </style>
 """, unsafe_allow_html=True)
