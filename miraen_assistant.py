@@ -571,7 +571,7 @@ with st.sidebar:
     st.markdown("<hr>", unsafe_allow_html=True)
 
     # 대화 초기화 버튼 (HTML 방식)
-    st.markdown(f"""
+    st.markdown("""
         <style>
         .reset-btn-wrap {
             padding: 0 0 8px 0;
