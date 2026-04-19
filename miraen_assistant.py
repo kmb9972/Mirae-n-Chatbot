@@ -85,8 +85,11 @@ st.markdown("""
     [data-testid="stSidebar"] > div:first-child {
         background: transparent !important;
     }
-    [data-testid="stSidebar"] * {
-        color: var(--ci-white) !important;
+    /* 사이드바 기본 텍스트는 갈색 계열로 */
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] div {
+        color: #5c3317 !important;
     }
     
     [data-testid="collapsedControl"] {
@@ -538,8 +541,8 @@ with st.sidebar:
 
     st.markdown("""
         <div style="
-            font-size:0.88rem; font-weight:800;
-            color:#5c3317;
+            font-size:0.88rem !important; font-weight:800 !important;
+            color:#5c3317 !important;
             letter-spacing:0.06em;
             text-transform:uppercase;
             padding: 4px 4px 8px 4px;
