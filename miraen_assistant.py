@@ -745,7 +745,7 @@ def get_gemini_response(messages_history: list) -> str:
             "강민범 선임님은 현재 **열일 중!** 🔥\n"
             "지금 이 순간도 MAMA를 더 똑똑하게 만들기 위해 코드를 두드리고 계실 거예요.\n\n"
             "🤫 이 명령어를 알고 계신 당신... 혹시 관계자세요? 😏"
-        )
+        ), 0, 0
 
     if any(k in q for k in ("누가 만들었", "만든 사람", "제작자", "창작자", "주인이 누구", "누가 개발")):
         CREATOR_RESPONSES = [
@@ -753,14 +753,14 @@ def get_gemini_response(messages_history: list) -> str:
             "👨‍💻 미래엔의 **천재 개발자, 강민범 선임님**이 제 아버지(?)십니다!\n\n선임님이 없었다면 저도 없었겠죠. 존재 자체가 감사한 분이에요. 🙏\n\n혹시 마주치시면 \'잘 쓰고 있어요!\' 한마디 전해주세요! 😄",
             "🌙 **강민범 선임님**이 밤을 지새우며 저를 만드셨어요.\n\n그 열정과 노력 덕분에 제가 이렇게 여러분 곁에 있을 수 있답니다. 💙\n\n선임님의 헌신에 박수를 👏👏👏",
         ]
-        return random.choice(CREATOR_RESPONSES)
+        return random.choice(CREATOR_RESPONSES), 0, 0
 
     if "강민범" in q:
         KMBRANDOM = [
             "오! 제 **창조주님**의 이름을 알고 계시네요! 👀\n\n반가워요! 강민범 선임님은 MAMA를 만드신 분이에요. 혹시 아는 사이세요? 😏",
             "🎊 **강민범 선임님** 이야기를 꺼내셨군요!\n\n저한테는 아버지 같은 분이에요. 선임님 덕분에 제가 존재할 수 있답니다! 💙",
         ]
-        return random.choice(KMBRANDOM)
+        return random.choice(KMBRANDOM), 0, 0
 
     # ── Gemini API 호출 ─────────────────────────────────────────────────────
     try:
@@ -787,17 +787,23 @@ def get_gemini_response(messages_history: list) -> str:
 
         chat = model.start_chat(history=history)
         response = chat.send_message(messages_history[-1]["content"])
-        return response.text.strip()
+
+        # 토큰 사용량 추출
+        usage = getattr(response, "usage_metadata", None)
+        input_tokens  = getattr(usage, "prompt_token_count",      0) if usage else 0
+        output_tokens = getattr(usage, "candidates_token_count",  0) if usage else 0
+
+        return response.text.strip(), input_tokens, output_tokens
 
     except Exception as e:
         logging.error(f"Gemini API 호출 오류: {e}", exc_info=True)
-        return "⚠️ AI 응답 중 오류가 발생했어요. 잠시 후 다시 시도해 주세요."
+        return "⚠️ AI 응답 중 오류가 발생했어요. 잠시 후 다시 시도해 주세요.", 0, 0
 
 get_ai_response = get_gemini_response
 
 
 # ── Google Sheets 로그 저장 ────────────────────────────────────────────────
-def log_to_sheets(question: str, answer: str):
+def log_to_sheets(question: str, answer: str, input_tokens: int = 0, output_tokens: int = 0):
     """질문과 답변을 Google Sheets에 기록"""
     try:
         import gspread
@@ -814,16 +820,26 @@ def log_to_sheets(question: str, answer: str):
         gc = gspread.authorize(creds)
         sheet_id = st.secrets["SHEETS_LOG_ID"]
         sh = gc.open_by_key(sheet_id)
-        ws = sh.sheet1  # 첫 번째 시트에 기록
+        ws = sh.sheet1
 
         # 헤더가 없으면 자동 추가
         if ws.row_count == 0 or ws.cell(1, 1).value != "시간":
-            ws.append_row(["시간", "질문", "답변"])
+            ws.append_row(["시간", "질문", "답변", "입력토큰", "출력토큰", "추정비용(원)"])
+
+        # Gemini 2.5 Flash 기준 비용 계산 (2026년 4월 기준)
+        # 입력: $0.15 / 1M 토큰, 출력: $0.60 / 1M 토큰, 환율 1380원
+        KRW = 1380
+        cost_krw = round(
+            (input_tokens / 1_000_000 * 0.15 + output_tokens / 1_000_000 * 0.60) * KRW, 4
+        )
 
         ws.append_row([
             datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             question,
             answer,
+            input_tokens,
+            output_tokens,
+            cost_krw,
         ])
     except Exception as e:
         logging.error(f"Sheets 로그 오류: {e}", exc_info=True)
@@ -870,15 +886,15 @@ def handle_send(question: str):
 
     with st.spinner("답변을 생성하고 있습니다..."):
         try:
-            answer = get_ai_response(st.session_state.messages)
+            answer, input_tokens, output_tokens = get_ai_response(st.session_state.messages)
         except Exception as e:
             logging.error(f"AI 응답 오류: {e}", exc_info=True)
-            answer = "⚠️ 일시적인 오류가 발생했어요. 잠시 후 다시 시도해 주세요."
+            answer, input_tokens, output_tokens = "⚠️ 일시적인 오류가 발생했어요. 잠시 후 다시 시도해 주세요.", 0, 0
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
 
     # Google Sheets 로그 저장
-    log_to_sheets(question, answer)
+    log_to_sheets(question, answer, input_tokens, output_tokens)
 
     st.rerun()
 
