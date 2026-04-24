@@ -577,6 +577,17 @@ with st.sidebar:
         ">자주 묻는 질문 TOP 5</div>
 
         <details class="sidebar-acc">
+            <summary>서류 발급 담당 부서는?</summary>
+            <div class="sidebar-acc-body">
+                <p>인사지원팀(인사): <span class="value">개인 원천징수영수증, 4대보험</span> 관련 발급</p>
+                <p>경영기획팀: <span class="value">법인인감증명서, 중견기업확인서</span> 발급</p>
+                <p>인사지원팀(총무): <span class="value">출판사신고필증</span> 발급</p>
+                <p>재무팀: <span class="value">사업자등록증(신규)</span> 발급</p>
+                <p>정도경영팀: <span class="value">사용인감 날인</span></p>
+            </div>
+        </details>
+
+        <details class="sidebar-acc">
             <summary>복지포인트 언제까지 써야 해?</summary>
             <div class="sidebar-acc-body">
                 <p>온라인(베네피아) <span class="value">12월 30일</span>까지</p>
@@ -590,7 +601,7 @@ with st.sidebar:
             <div class="sidebar-acc-body">
                 <p>기본 주 <span class="value">2회</span></p>
                 <p>공휴일 1일 포함 주 → <span class="value">1회</span></p>
-                <p>공휴일 2일 이상 포함 주 → <span class="value">불가</span></p>
+                <p>공휴일 2일 이상 포함 주 → <span class="value">재택근무(주 2회 재택 외)신청서</span></p>
             </div>
         </details>
 
@@ -612,13 +623,7 @@ with st.sidebar:
             </div>
         </details>
 
-        <details class="sidebar-acc">
-            <summary>사이버 연수원 미수료하면?</summary>
-            <div class="sidebar-acc-body">
-                <p>향후 <span class="value">6개월간</span> 수강 신청 제한!</p>
-                <p style="margin-top:6px;">매월 중순 전사게시판에서 신청, 익월 수강이에요.</p>
-            </div>
-        </details>
+
     """, unsafe_allow_html=True)
 
     st.markdown("<hr>", unsafe_allow_html=True)
