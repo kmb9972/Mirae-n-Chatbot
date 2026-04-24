@@ -376,6 +376,29 @@ st.markdown("""
         transform: translateY(0) !important;
     }
 
+    /* 카테고리 버튼: 흰색 배경 + 검은 글자로 덮어쓰기 */
+    div[data-testid="stHorizontalBlock"] div[data-testid="stButton"] > button {
+        background: #ffffff !important;
+        color: #111111 !important;
+        border: 1px solid #d0d0d0 !important;
+        border-radius: 10px !important;
+        height: 48px !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
+    }
+    div[data-testid="stHorizontalBlock"] div[data-testid="stButton"] > button:hover {
+        background: #f0f5fb !important;
+        border-color: #1A53A0 !important;
+        color: #1A53A0 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 3px 10px rgba(26,83,160,0.15) !important;
+    }
+    div[data-testid="stHorizontalBlock"] div[data-testid="stButton"] > button p,
+    div[data-testid="stHorizontalBlock"] div[data-testid="stButton"] > button span {
+        color: inherit !important;
+    }
+
     
     hr { border-color: rgba(255, 255, 255, 0.15) !important; }
 
