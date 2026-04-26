@@ -583,7 +583,7 @@ with st.sidebar:
                 <p>경영기획팀: <span class="value">법인인감증명서, 중견기업확인서</span> 발급</p>
                 <p>인사지원팀(총무): <span class="value">출판사신고필증</span> 발급</p>
                 <p>재무팀: <span class="value">사업자등록증(신규)</span> 발급</p>
-                <p>정도경영팀: <span class="value">사용인감</span></p> 날인
+                <p>정도경영팀: <span class="value">사용인감</span> 날인</p>
             </div>
         </details>
 
